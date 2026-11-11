@@ -1,0 +1,18 @@
+run,kind,status,record
+debate-rounds2-20261111-011021-316,stock_attempt,failed,runs/debate-rounds2-20261111-011021-316/pilot/trial.json
+debate-rounds2-20261111-150053-609,stock_attempt,failed,runs/debate-rounds2-20261111-150053-609/pilot/trial.json
+debate-rounds2-retry-20261111-011533-892,stock_attempt,interrupted,runs/debate-rounds2-retry-20261111-011533-892/pilot/llm_events.jsonl
+live-pilot,stock_attempt,failed,runs/live-pilot/pilot/trial.json
+offline,exploratory_artifact,no scored trial record,runs/offline
+offline-control,offline_control,ok,runs/offline-control/rounds-1/trial.json
+offline-control,offline_control,ok,runs/offline-control/rounds-2/trial.json
+pilot-20261110-221346,exploratory_artifact,no scored trial record,runs/pilot-20261110-221346
+pilot-local-20261110-225018,stock_attempt,ok,runs/pilot-local-20261110-225018/pilot/trial.json
+preflight-20261110-232705,api_probe,failed,runs/preflight-20261110-232705/api_probe.json
+preflight-after-access-20261111-010950-197,api_probe,ok,runs/preflight-after-access-20261111-010950-197/api_probe.json
+preflight-after-socksio-20261111-010314-384,api_probe,failed,runs/preflight-after-socksio-20261111-010314-384/api_probe.json
+preflight-current-20261111-145735-246,api_probe,failed,runs/preflight-current-20261111-145735-246/api_probe.json
+preflight-current-20261111-145820-803,api_probe,ok,runs/preflight-current-20261111-145820-803/api_probe.json
+prior-user-run,exploratory_artifact,no scored trial record,runs/prior-user-run
+rerun-20261110-check1,api_probe,failed,runs/rerun-20261110-check1/api_probe.json
+ssl-check-20261110-224413,api_probe,ok,runs/ssl-check-20261110-224413/api_probe.json
