@@ -1,0 +1,9 @@
+# Observed versions, not a complete lockfile.
+openai==3.49.0
+httpx==0.28.1
+langchain-core==1.7.7
+langchain-openai==1.7.4
+langgraph==1.2.20
+yfinance==1.8.0
+pandas==3.1.1
+python-dotenv==1.2.4
