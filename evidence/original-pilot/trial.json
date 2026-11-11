@@ -1,0 +1,27 @@
+{
+  "mode": "live",
+  "ticker": "NVDA",
+  "date": "2026-11-09",
+  "debate_rounds_configured": 1,
+  "risk_rounds_configured": 1,
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "base_url": "https://api.deepseek.com",
+  "temperature": "provider default",
+  "top_p": "provider default",
+  "max_tokens": "provider default",
+  "initial_memory": "empty",
+  "analysts": [
+    "market"
+  ],
+  "status": "ok",
+  "elapsed_seconds": 285.317,
+  "debate_turns": 2,
+  "risk_turns": 3,
+  "rating": "Underweight",
+  "market_report_sha256": "3877257833bde6989eb894389e833f59159c1bc26edc88c074a873e8cd20f652",
+  "llm_calls": 13,
+  "tool_calls": 0,
+  "tokens_in": 76613,
+  "tokens_out": 37303
+}
