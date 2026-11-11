@@ -1,0 +1,13 @@
+[
+  {
+    "cohort": "frozen_raw_v1",
+    "data_sha256": "b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca",
+    "mode": "live",
+    "rounds": 1,
+    "attempted": 1,
+    "completed": 0,
+    "failed": 1,
+    "ratings": {},
+    "metrics": {}
+  }
+]

@@ -1,0 +1,6 @@
+{"utc": "2026-11-11T08:24:39.376232+00:00", "event": "start", "run_id": "01a1c9b5-86d0-7454-b20e-e426c0969ef8"}
+{"utc": "2026-11-11T08:24:40.891685+00:00", "event": "end", "run_id": "01a1c9b5-86d0-7454-b20e-e426c0969ef8", "usage_available": true, "input_tokens": 1969, "output_tokens": 142}
+{"utc": "2026-11-11T08:24:40.918280+00:00", "event": "start", "run_id": "01a1c9b5-8cd7-7359-acbd-734c92986f59"}
+{"utc": "2026-11-11T08:24:45.693769+00:00", "event": "end", "run_id": "01a1c9b5-8cd7-7359-acbd-734c92986f59", "usage_available": true, "input_tokens": 11907, "output_tokens": 1048}
+{"utc": "2026-11-11T08:24:45.927536+00:00", "event": "start", "run_id": "01a1c9b5-a068-72e9-817c-53df81ac83b8"}
+{"utc": "2026-11-11T08:25:15.487623+00:00", "event": "error", "run_id": "01a1c9b5-a068-72e9-817c-53df81ac83b8", "error_type": "OpenAIConnectionError"}
