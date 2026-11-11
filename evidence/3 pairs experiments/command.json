@@ -1,0 +1,29 @@
+{
+  "python": "D:\\00chatgpt-work\\jieya\\TradingAgents-main\\.venv\\Scripts\\python.exe",
+  "argv": [
+    "D:\\file\\ChatGPT\\5660\\TradingAgents_Reproducibility\\run_experiment.py",
+    "--env-file",
+    "D:\\00chatgpt-work\\jieya\\TradingAgents-main\\.env",
+    "--frozen-csv",
+    "D:\\file\\ChatGPT\\5660\\TradingAgents_Reproducibility\\runs\\pilot-local-20261110-225018\\pilot\\cache\\NVDA-YFin-data.csv",
+    "--pairs",
+    "3",
+    "--output",
+    "D:\\file\\ChatGPT\\5660\\TradingAgents_Reproducibility\\runs\\formal-pairs3-20261111-162701-363"
+  ],
+  "cwd": "D:\\file\\ChatGPT\\5660\\TradingAgents_Reproducibility",
+  "pair_order": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      1,
+      2
+    ]
+  ]
+}

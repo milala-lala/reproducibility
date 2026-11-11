@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<title>NVDA 2026-11-09 Underweight: TradingAgents report</title>
+<style>
+:root {
+  --paper: #fbfbfa; --ink: #1c2126; --muted: #5d6670; --rule: #e2e5e8; --wash: #f2f4f5;
+  --accent: #087a59; --up: #087a59; --down: #b4372f; --level: #5d6670; --edge: #d3d8dc; --mark: #878f97;
+  --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #131a1f; --ink: #e4e8eb; --muted: #9aa6af; --rule: #263239; --wash: #1a242a;
+    --accent: #14c290; --up: #14c290; --down: #ef6f63; --level: #9aa6af; --edge: #3d4c55; --mark: #66737c;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .masthead .logo [stroke="#363636"] { stroke: var(--muted); }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 17px/1.62 var(--serif); font-kerning: normal;
+}
+.page { max-width: 46rem; margin: 0 auto; padding: 3.5rem 1.5rem 6rem; }
+main h2, main h3 { scroll-margin-top: 1rem; }
+a { color: var(--accent); text-underline-offset: 0.15em; }
+h1, h2, h3, h4 { text-wrap: balance; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.masthead { padding-bottom: 1.75rem; border-bottom: 1px solid var(--rule); }
+/* The logo leads at the top left, where readers look for it, 24px tall (the usual
+   on-screen floor for a wordmark) with at least its height clear below. */
+.masthead .logo { display: block; width: fit-content; margin: 0 0 2.25rem; }
+.masthead .logo svg { display: block; height: 1.5rem; width: auto; }
+.masthead h1 {
+  margin: 0; font: 600 2.6rem/1.1 var(--sans); letter-spacing: -0.02em;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2em 0.5em;
+}
+.masthead .rating { font-weight: 500; }
+.rating.up { color: var(--up); } .rating.down { color: var(--down); } .rating.level { color: var(--level); }
+.rating.review { color: var(--muted); font-style: italic; }
+.masthead .date { margin: 0.55rem 0 1.5rem; font: 1rem/1.4 var(--sans); color: var(--muted); }
+.run { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 0.45rem 1.25rem;
+  font: 0.85rem/1.5 var(--sans); }
+.run > div { display: contents; }
+.run dt { color: var(--muted); }
+.run dd { margin: 0; overflow-wrap: anywhere; }
+.run .note dd { color: var(--down); }
+.field { display: inline-block; margin: 0 0.15rem 0.15rem 0; padding: 0 0.4rem; border: 1px solid var(--edge);
+  border-radius: 4px; background: var(--wash); font: 0.8rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.run .group { display: inline-block; margin-right: 0.9rem; white-space: nowrap; }
+.run .group > .name { color: var(--muted); margin-right: 0.3rem; }
+.run .then { color: var(--muted); margin: 0 0.2rem; }
+
+/* The sections: listed under the header on narrow screens. On wide ones, a
+   quiet rail centred on the left edge (numerals for the sections, short bars
+   for their agents) that opens into the full list when pointed at or focused. */
+.contents { margin: 2.25rem 0 0; font: 0.9rem/1.45 var(--sans); }
+.contents ul { margin: 0; padding: 0; list-style: none; }
+.contents > ul > li { margin: 0 0 0.75rem; }
+.contents ul ul { margin-top: 0.2rem; padding-left: 1.6rem; font-size: 0.85rem; }
+.contents ul ul li { margin: 0.1rem 0; }
+.contents a { display: flex; align-items: center; gap: 0.6rem; color: var(--muted); text-decoration: none; }
+.contents > ul > li > a { color: var(--ink); }
+.contents .num { min-width: 1.6rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.contents .bar { display: none; }
+.contents a:hover .label, .contents a:focus-visible .label { color: var(--accent); text-decoration: underline; }
+.to-top { position: fixed; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom));
+  padding: 0.25rem 0.6rem; border: 1px solid var(--edge); border-radius: 4px; background: var(--paper);
+  color: var(--muted); font: 0.8rem/1.4 var(--sans); text-decoration: none; }
+
+@media (min-width: 60rem) {
+  .contents { position: fixed; left: 1rem; top: 50%; transform: translateY(-50%); z-index: 1;
+    max-height: 86vh; overflow-y: auto; overscroll-behavior: contain; margin: 0;
+    padding: 0.7rem 0.9rem; border: 1px solid transparent; border-radius: 6px;
+    transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s; }
+  .contents > ul > li { margin: 0 0 0.35rem; }
+  .contents ul ul { margin-top: 0; padding-left: 0; }
+  .contents ul ul li { margin: 0; }
+  /* Marks reach 3:1 contrast and rows 24px, the WCAG 2.2 floors for a control's
+     visual cue and its pointer target. */
+  .contents a { min-height: 1.5rem; }
+  .contents .num { min-width: 1.4rem; }
+  .contents .bar { display: block; flex: none; width: 1.25rem; height: 2px; margin-left: 0.2rem;
+    border-radius: 1px; background: var(--mark); }
+  .contents .label { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap;
+    transition: opacity 0.15s, max-width 0.2s; }
+  .contents:hover, .contents:focus-within { background: var(--paper); border-color: var(--rule);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.08); }
+  .contents:hover .label, .contents:focus-within .label { max-width: 18rem; opacity: 1; }
+  .contents a:hover .bar, .contents a:focus-visible .bar { background: var(--accent); }
+  .to-top { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contents, .contents .label { transition: none; }
+}
+
+/* The maker's credit: one quiet line at the foot. */
+.credit { margin-top: 4.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
+  color: var(--muted); font: 0.8rem/1.4 var(--sans); }
+.credit a { color: inherit; text-decoration: none; }
+.credit a.brand { color: var(--accent); }
+.credit a:hover, .credit a:focus-visible { text-decoration: underline; }
+
+/* Three levels of separation: the five groups, the agents within a group, and
+   breaks an agent draws inside its own text. */
+main h2 {
+  margin: 4.5rem 0 0.25rem; padding-top: 1.5rem; border-top: 2px solid var(--ink);
+  font: 600 1.45rem/1.3 var(--sans); letter-spacing: -0.01em;
+}
+main section:first-child h2 { margin-top: 3rem; }
+main h3 { margin: 2.75rem 0 0.75rem; padding-top: 1.1rem; border-top: 1px solid var(--rule);
+  font: 600 1.15rem/1.35 var(--sans); color: var(--accent); }
+main h2 + h3 { margin-top: 1.25rem; padding-top: 0; border-top: 0; }
+main h4, main h5, main h6 { margin: 1.75rem 0 0.5rem; font: 600 1rem/1.4 var(--sans); }
+main h5, main h6 { color: var(--muted); }
+main p, main ul, main ol { margin: 0 0 1rem; }
+main li { margin: 0.25rem 0; }
+main strong { font-weight: 650; }
+main blockquote { margin: 1.25rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--rule);
+  color: var(--muted); }
+main code { font: 0.88em/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: var(--wash); padding: 0.1em 0.3em; border-radius: 3px; }
+main pre { background: var(--wash); padding: 0.9rem 1rem; border-radius: 4px; overflow-x: auto; }
+main pre code { background: none; padding: 0; }
+main hr { width: 3rem; margin: 2rem auto; border: 0; border-top: 1px solid var(--rule); }
+
+.table { overflow-x: auto; margin: 0 0 1.25rem; }
+table { border-collapse: collapse; width: 100%; font: 0.86rem/1.45 var(--sans);
+  font-variant-numeric: tabular-nums; }
+th, td { padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
+th { font-weight: 600; border-bottom-color: var(--muted); }
+tbody tr:last-child td { border-bottom: 0; }
+
+@media (max-width: 34rem) {
+  body { font-size: 16px; }
+  .page { padding: 2rem 1rem 3rem; }
+  .masthead h1 { font-size: 2rem; }
+  .masthead .logo svg { height: 1.25rem; }
+  .run { grid-template-columns: 1fr; gap: 0 0; }
+  .run dd { margin-bottom: 0.45rem; }
+  .run .group { white-space: normal; }
+}
+@media print {
+  :root { --paper: #fff; --ink: #000; --muted: #444; --rule: #bbb; --accent: #000; --wash: #f2f2f2;
+    --edge: #bbb; --up: #087a59; --down: #b4372f; --level: #444; }
+  body { font-size: 11pt; }
+  .table { overflow: visible; }
+  .page { max-width: none; padding: 0; }
+  .contents, .to-top { display: none; }
+  main h2 { break-before: page; border-top: 0; margin-top: 0; }
+  main section:first-child h2 { break-before: auto; }
+  main h3, main h4 { break-after: avoid; }
+  a { color: inherit; text-decoration: none; }
+  table { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="page" id="top">
+<header class="masthead">
+<a class="logo" href="https://tauric.ai" rel="noopener" aria-label="Tauric Research"><svg width="993" height="115" viewBox="0 0 993 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M189.86 95.0459V37.9779H165.924V29.9259H223.74V37.9779H199.804V95.0459H189.86ZM251.026 46.4259C256.071 46.4259 260.178 47.0272 263.345 48.2299C266.514 49.4032 268.89 51.3686 270.474 54.1259C272.058 56.8832 272.85 60.6379 272.85 65.3899V95.0459H264.666L263.961 89.8979H263.434C261.644 91.7752 259.386 93.2419 256.657 94.2979C253.929 95.3246 251.025 95.8379 247.946 95.8379C244.426 95.8379 241.419 95.2952 238.925 94.2099C236.432 93.0952 234.54 91.5406 233.249 89.5459C231.959 87.5512 231.313 85.2046 231.313 82.5059C231.313 78.2526 232.897 74.9672 236.065 72.6499C239.263 70.3032 244.337 68.8219 251.29 68.2059L263.258 67.0179V64.7299C263.258 61.9139 262.774 59.7139 261.806 58.1299C260.838 56.5459 259.371 55.4312 257.406 54.7859C255.47 54.1406 252.888 53.8179 249.662 53.8179C247.432 53.8179 245.012 54.0086 242.401 54.3899C239.82 54.7712 237.341 55.3432 234.965 56.1059V48.8019C237.312 48.0392 239.908 47.4526 242.754 47.0419C245.628 46.6312 248.386 46.4259 251.026 46.4259ZM250.541 89.0619C252.888 89.0619 255.162 88.6512 257.362 87.8299C259.562 86.9792 261.527 85.7179 263.258 84.0459V72.8259L252.038 73.9259C248.136 74.3659 245.35 75.2166 243.678 76.4779C242.005 77.7099 241.169 79.4699 241.169 81.7579C241.169 84.0752 241.947 85.8792 243.501 87.1699C245.056 88.4312 247.403 89.0619 250.541 89.0619ZM313.339 95.8379C307.59 95.8379 303.087 94.2979 299.831 91.2179C296.575 88.1086 294.947 83.2686 294.947 76.6979V47.1739H304.715V76.1699C304.715 80.1886 305.624 83.0779 307.443 84.8379C309.291 86.5979 311.916 87.4779 315.319 87.4779C317.871 87.4779 320.379 86.9939 322.843 86.0259C325.336 85.0286 327.492 83.5766 329.311 81.6699V47.1739H339.079V95.0459H330.983L330.367 89.9419H329.883C327.624 91.8486 325.072 93.3152 322.227 94.3419C319.382 95.3392 316.419 95.8379 313.339 95.8379ZM362.371 47.1739H370.423L371.171 53.2899H371.743C373.474 51.2072 375.703 49.5792 378.431 48.4059C381.188 47.2326 384.063 46.6459 387.055 46.6459C388.756 46.6459 390.355 46.7926 391.851 47.0859V55.8419C390.414 55.5779 388.654 55.4459 386.571 55.4459C383.99 55.4459 381.364 55.9446 378.695 56.9419C376.026 57.9392 373.84 59.4206 372.139 61.3859V95.0459H362.371V47.1739ZM409.069 95.0459V47.1739H418.837V95.0459H409.069ZM413.953 37.8459C411.871 37.8459 410.287 37.3912 409.201 36.4819C408.145 35.5726 407.617 34.2672 407.617 32.5659C407.617 30.8352 408.145 29.5152 409.201 28.6059C410.287 27.6672 411.871 27.1979 413.953 27.1979C416.036 27.1979 417.605 27.6672 418.661 28.6059C419.747 29.5152 420.289 30.8352 420.289 32.5659C420.289 34.2672 419.747 35.5726 418.661 36.4819C417.605 37.3912 416.036 37.8459 413.953 37.8459ZM464.85 95.9259C456.607 95.9259 450.315 93.8432 445.974 89.6779C441.662 85.5126 439.506 79.3526 439.506 71.1979C439.506 63.0139 441.779 56.8392 446.326 52.6739C450.902 48.5086 457.575 46.4259 466.346 46.4259C470.716 46.4259 474.735 46.9246 478.402 47.9219V55.7099C476.378 55.2406 474.486 54.8886 472.726 54.6539C470.966 54.4192 469.118 54.3019 467.182 54.3019C461.168 54.3019 456.71 55.6512 453.806 58.3499C450.931 61.0486 449.494 65.2872 449.494 71.0659C449.494 76.8739 450.858 81.1566 453.586 83.9139C456.343 86.6712 460.42 88.0499 465.818 88.0499C467.695 88.0499 469.616 87.8886 471.582 87.5659C473.547 87.2139 475.82 86.6712 478.402 85.9379V93.7259C474.236 95.1926 469.719 95.9259 464.85 95.9259ZM574.428 95.0459L553.704 69.0859C553.176 69.1152 552.37 69.1299 551.284 69.1299C548.38 69.1299 544.978 68.9832 541.076 68.6899V95.0459H531.308V31.4659C537.967 29.9699 544.846 29.2219 551.944 29.2219C561.595 29.2219 568.752 30.8059 573.416 33.9739C578.08 37.1126 580.412 42.1286 580.412 49.0219C580.412 54.0086 579.004 58.0859 576.188 61.2539C573.402 64.4219 569.266 66.6366 563.78 67.8979L585.648 95.0459H574.428ZM541.076 61.2099C543.071 61.4152 544.816 61.5619 546.312 61.6499C547.838 61.7379 549.627 61.7819 551.68 61.7819C558.427 61.7819 563.34 60.7699 566.42 58.7459C569.5 56.6926 571.04 53.4952 571.04 49.1539C571.04 46.0739 570.395 43.6099 569.104 41.7619C567.843 39.9139 565.863 38.5792 563.164 37.7579C560.495 36.9366 556.975 36.5259 552.604 36.5259C550.404 36.5259 548.424 36.6139 546.664 36.7899C544.904 36.9659 543.042 37.2299 541.076 37.5819V61.2099ZM642.947 74.0139H608.231C608.407 77.4752 609.155 80.2766 610.475 82.4179C611.795 84.5299 613.775 86.0846 616.415 87.0819C619.055 88.0792 622.443 88.5779 626.579 88.5779C630.686 88.5779 635.233 87.9472 640.219 86.6859V93.9459C635.027 95.2659 630.026 95.9259 625.215 95.9259C616.298 95.9259 609.61 93.9166 605.151 89.8979C600.722 85.8499 598.507 79.6166 598.507 71.1979C598.507 65.9179 599.402 61.4299 601.191 57.7339C602.981 54.0379 605.562 51.2366 608.935 49.3299C612.338 47.3939 616.43 46.4259 621.211 46.4259C628.251 46.4259 633.634 48.5819 637.359 52.8939C641.085 57.1766 642.947 63.3659 642.947 71.4619V74.0139ZM621.079 52.8939C616.973 52.8939 613.834 54.1406 611.663 56.6339C609.493 59.0979 608.334 62.9259 608.187 68.1179H633.751C633.634 62.9259 632.519 59.0979 630.407 56.6339C628.295 54.1406 625.186 52.8939 621.079 52.8939ZM677.365 95.9259C671.352 95.9259 665.896 95.2219 660.997 93.8139V86.7299C666.248 88.1966 671.718 88.9299 677.409 88.9299C681.809 88.9299 684.977 88.3432 686.913 87.1699C688.849 85.9672 689.817 84.2219 689.817 81.9339C689.817 80.7019 689.597 79.6899 689.157 78.8979C688.717 78.0766 687.969 77.4019 686.913 76.8739C685.857 76.3166 684.405 75.8912 682.557 75.5979L674.065 74.2779C669.137 73.4859 665.573 71.9899 663.373 69.7899C661.202 67.5899 660.117 64.6419 660.117 60.9459C660.117 56.4579 661.965 52.9232 665.661 50.3419C669.386 47.7312 675.062 46.4259 682.689 46.4259C685.094 46.4259 687.485 46.5872 689.861 46.9099C692.266 47.2032 694.481 47.6432 696.505 48.2299V55.2699C692.046 54.0379 687.456 53.4219 682.733 53.4219C677.893 53.4219 674.476 54.0526 672.481 55.3139C670.486 56.5752 669.489 58.3206 669.489 60.5499C669.489 62.2219 670.002 63.5859 671.029 64.6419C672.056 65.6686 673.889 66.4166 676.529 66.8859L685.021 68.2059C689.92 68.9686 693.513 70.3766 695.801 72.4299C698.089 74.4832 699.233 77.4606 699.233 81.3619C699.233 84.3832 698.412 86.9792 696.769 89.1499C695.156 91.3206 692.706 92.9926 689.421 94.1659C686.165 95.3392 682.146 95.9259 677.365 95.9259ZM760.579 74.0139H725.863C726.039 77.4752 726.787 80.2766 728.107 82.4179C729.427 84.5299 731.407 86.0846 734.047 87.0819C736.687 88.0792 740.075 88.5779 744.211 88.5779C748.317 88.5779 752.864 87.9472 757.851 86.6859V93.9459C752.659 95.2659 747.657 95.9259 742.847 95.9259C733.929 95.9259 727.241 93.9166 722.783 89.8979C718.353 85.8499 716.139 79.6166 716.139 71.1979C716.139 65.9179 717.033 61.4299 718.823 57.7339C720.612 54.0379 723.193 51.2366 726.567 49.3299C729.969 47.3939 734.061 46.4259 738.843 46.4259C745.883 46.4259 751.265 48.5819 754.991 52.8939C758.716 57.1766 760.579 63.3659 760.579 71.4619V74.0139ZM738.711 52.8939C734.604 52.8939 731.465 54.1406 729.295 56.6339C727.124 59.0979 725.965 62.9259 725.819 68.1179H751.383C751.265 62.9259 750.151 59.0979 748.039 56.6339C745.927 54.1406 742.817 52.8939 738.711 52.8939ZM796.986 46.4259C802.032 46.4259 806.138 47.0272 809.306 48.2299C812.474 49.4032 814.85 51.3686 816.434 54.1259C818.018 56.8832 818.81 60.6379 818.81 65.3899V95.0459H810.626L809.922 89.8979H809.394C807.605 91.7752 805.346 93.2419 802.618 94.2979C799.89 95.3246 796.986 95.8379 793.906 95.8379C790.386 95.8379 787.38 95.2952 784.886 94.2099C782.393 93.0952 780.501 91.5406 779.21 89.5459C777.92 87.5512 777.274 85.2046 777.274 82.5059C777.274 78.2526 778.858 74.9672 782.026 72.6499C785.224 70.3032 790.298 68.8219 797.25 68.2059L809.218 67.0179V64.7299C809.218 61.9139 808.734 59.7139 807.766 58.1299C806.798 56.5459 805.332 55.4312 803.366 54.7859C801.43 54.1406 798.849 53.8179 795.622 53.8179C793.393 53.8179 790.973 54.0086 788.362 54.3899C785.781 54.7712 783.302 55.3432 780.926 56.1059V48.8019C783.273 48.0392 785.869 47.4526 788.714 47.0419C791.589 46.6312 794.346 46.4259 796.986 46.4259ZM796.502 89.0619C798.849 89.0619 801.122 88.6512 803.322 87.8299C805.522 86.9792 807.488 85.7179 809.218 84.0459V72.8259L797.998 73.9259C794.097 74.3659 791.31 75.2166 789.638 76.4779C787.966 77.7099 787.13 79.4699 787.13 81.7579C787.13 84.0752 787.908 85.8792 789.462 87.1699C791.017 88.4312 793.364 89.0619 796.502 89.0619ZM841.524 47.1739H849.576L850.324 53.2899H850.896C852.627 51.2072 854.856 49.5792 857.584 48.4059C860.341 47.2326 863.216 46.6459 866.208 46.6459C867.909 46.6459 869.508 46.7926 871.004 47.0859V55.8419C869.567 55.5779 867.807 55.4459 865.724 55.4459C863.143 55.4459 860.517 55.9446 857.848 56.9419C855.179 57.9392 852.993 59.4206 851.292 61.3859V95.0459H841.524V47.1739ZM909.164 95.9259C900.921 95.9259 894.629 93.8432 890.288 89.6779C885.976 85.5126 883.82 79.3526 883.82 71.1979C883.82 63.0139 886.093 56.8392 890.64 52.6739C895.216 48.5086 901.889 46.4259 910.66 46.4259C915.03 46.4259 919.049 46.9246 922.716 47.9219V55.7099C920.692 55.2406 918.8 54.8886 917.04 54.6539C915.28 54.4192 913.432 54.3019 911.496 54.3019C905.482 54.3019 901.024 55.6512 898.12 58.3499C895.245 61.0486 893.808 65.2872 893.808 71.0659C893.808 76.8739 895.172 81.1566 897.9 83.9139C900.657 86.6712 904.734 88.0499 910.132 88.0499C912.009 88.0499 913.93 87.8886 915.896 87.5659C917.861 87.2139 920.134 86.6712 922.716 85.9379V93.7259C918.55 95.1926 914.033 95.9259 909.164 95.9259ZM941.796 23.9419H951.564V52.2779H952.048C954.248 50.3712 956.756 48.9192 959.572 47.9219C962.417 46.9246 965.395 46.4259 968.504 46.4259C974.019 46.4259 978.375 47.9952 981.572 51.1339C984.769 54.2432 986.368 59.0686 986.368 65.6099V95.0459H976.6V66.0939C976.6 62.0459 975.661 59.1566 973.784 57.4259C971.936 55.6952 969.237 54.8299 965.688 54.8299C963.048 54.8299 960.481 55.3286 957.988 56.3259C955.524 57.2939 953.383 58.7312 951.564 60.6379V95.0459H941.796V23.9419Z" fill="#14C290"/>
+<rect x="0.205322" y="14.873" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="43.1211" y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="14.679" y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="14.679" y="44.0371" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="29.3579" y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="29.3579" y="44.0371" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="71.9265" y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="71.9265" y="44.0371" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="57.2478" y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="86.6055" y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="86.6055" y="44.0371" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="101.284" y="29.1787" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="29.3579" y="58.7158" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="71.9265" y="58.7158" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="43.1211" y="87.1592" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="57.2478" y="87.1592" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="29.3579" y="73.0205" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="71.9265" y="73.0205" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="29.3579" y="87.3262" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="71.9265" y="87.3262" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="43.1211" y="101.631" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="57.2478" y="101.631" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="101.284" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+<rect x="15.0187" y="15.213" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="29.6979" y="15.213" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="43.4611" y="15.213" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="57.5876" y="15.213" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="43.4611" y="44.3771" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="0.34" y="44.3771" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="57.5876" y="44.3771" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="101.624" y="44.3771" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="43.4611" y="59.0558" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="57.5876" y="59.0558" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="0.34" y="59.0558" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="15.0187" y="59.0558" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="86.9455" y="59.0558" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="101.624" y="59.0558" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="43.4611" y="73.3605" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="57.5876" y="73.3605" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="0.34" y="73.3605" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="15.0187" y="73.3605" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="86.9455" y="73.3605" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="101.624" y="73.3605" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="0.34" y="87.6662" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="15.0187" y="87.6662" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="86.9455" y="87.6662" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="101.624" y="87.6662" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="0.34" y="101.971" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="15.0187" y="101.971" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="29.6979" y="101.971" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="72.2668" y="101.971" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="86.9455" y="101.971" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="101.624" y="101.971" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="43.4611" y="0.34" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="57.5876" y="0.34" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="15.0187" y="0.34" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="29.6979" y="0.34" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="72.2668" y="0.34" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="86.9455" y="0.34" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="72.445" y="15.213" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="86.7506" y="15.213" width="10.0489" height="10.0489" rx="5.02447" stroke="#363636" stroke-width="0.68"/>
+<rect x="100.716" y="14.873" width="10.7289" height="10.7289" rx="5.36447" fill="#14C290"/>
+</svg></a>
+<h1><span class="ticker">NVDA</span> <span class="rating down">Underweight</span></h1>
+<p class="date">Analysis of 2026-11-09</p>
+<dl class="run"><div class="detail"><dt>Generated</dt><dd>2026-11-11 16:45</dd></div><div class="detail"><dt>Deep model</dt><dd><span class="field">deepseek</span> <span class="field">deepseek-flash</span></dd></div><div class="detail"><dt>Quick model</dt><dd><span class="field">deepseek</span> <span class="field">deepseek-flash</span></dd></div><div class="detail"><dt>Analysts</dt><dd><span class="field">market</span></dd></div><div class="detail"><dt>Debate rounds</dt><dd><span class="group"><span class="name">research</span><span class="field">2</span></span> <span class="group"><span class="name">risk</span><span class="field">1</span></span></dd></div><div class="detail"><dt>Data vendors</dt><dd><span class="group"><span class="name">Prices</span><span class="field">yfinance</span></span> <span class="group"><span class="name">Indicators</span><span class="field">yfinance</span></span> <span class="group"><span class="name">Fundamentals</span><span class="field">sec_edgar</span> <span class="then">→</span> <span class="field">yfinance</span></span> <span class="group"><span class="name">News</span><span class="field">yfinance</span></span> <span class="group"><span class="name">Macro</span><span class="field">fred</span></span> <span class="group"><span class="name">Prediction markets</span><span class="field">polymarket</span></span></dd></div><div class="detail"><dt>Version</dt><dd>TradingAgents 0.7.1</dd></div></dl>
+</header>
+<nav class="contents" aria-label="Sections"><ul><li><a href="#s1"><span class="num">I</span> <span class="label">Analyst Team Reports</span></a><ul><li><a href="#s1-1"><span class="bar"></span> <span class="label">Market Analyst</span></a></li></ul></li><li><a href="#s2"><span class="num">II</span> <span class="label">Research Team Decision</span></a><ul><li><a href="#s2-1"><span class="bar"></span> <span class="label">Bull Researcher</span></a></li><li><a href="#s2-2"><span class="bar"></span> <span class="label">Bear Researcher</span></a></li><li><a href="#s2-3"><span class="bar"></span> <span class="label">Research Manager</span></a></li></ul></li><li><a href="#s3"><span class="num">III</span> <span class="label">Trading Team Plan</span></a><ul><li><a href="#s3-1"><span class="bar"></span> <span class="label">Trader</span></a></li></ul></li><li><a href="#s4"><span class="num">IV</span> <span class="label">Risk Management Team Decision</span></a><ul><li><a href="#s4-1"><span class="bar"></span> <span class="label">Aggressive Analyst</span></a></li><li><a href="#s4-2"><span class="bar"></span> <span class="label">Conservative Analyst</span></a></li><li><a href="#s4-3"><span class="bar"></span> <span class="label">Neutral Analyst</span></a></li></ul></li><li><a href="#s5"><span class="num">V</span> <span class="label">Portfolio Manager Decision</span></a><ul><li><a href="#s5-1"><span class="bar"></span> <span class="label">Portfolio Manager</span></a></li></ul></li></ul></nav>
+<main>
+<section id="s1"><h2>I. Analyst Team Reports</h2><h3 id="s1-1">Market Analyst</h3>
+<h4>NVDA — Technical Analysis Report</h4>
+<p><strong>Analysis date: 2026-11-09 (close)</strong> | Instrument: <strong>NVDA</strong> | Source of truth: verified market snapshot</p>
+<hr />
+<h5>1. Verified Data Anchor</h5>
+<p>All exact figures below come from <code>get_verified_market_snapshot</code> (2026-11-09) and agree exactly with the indicator series pulled via <code>get_indicators</code> — <strong>no discrepancies to flag</strong>.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th style="text-align:right">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Open</td>
+<td style="text-align:right">173.07</td>
+</tr>
+<tr>
+<td>High</td>
+<td style="text-align:right">179.92</td>
+</tr>
+<tr>
+<td>Low</td>
+<td style="text-align:right">170.24</td>
+</tr>
+<tr>
+<td><strong>Close</strong></td>
+<td style="text-align:right"><strong>178.67</strong></td>
+</tr>
+<tr>
+<td>Volume</td>
+<td style="text-align:right">459,116,500</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th style="text-align:right">2026-11-09</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close_10_ema</td>
+<td style="text-align:right">196.969</td>
+</tr>
+<tr>
+<td>close_50_sma</td>
+<td style="text-align:right">219.00</td>
+</tr>
+<tr>
+<td>close_200_sma</td>
+<td style="text-align:right">204.348</td>
+</tr>
+<tr>
+<td>rsi</td>
+<td style="text-align:right">27.406</td>
+</tr>
+<tr>
+<td>boll (20 SMA)</td>
+<td style="text-align:right">209.165</td>
+</tr>
+<tr>
+<td>boll_ub</td>
+<td style="text-align:right">236.086</td>
+</tr>
+<tr>
+<td>boll_lb</td>
+<td style="text-align:right">182.243</td>
+</tr>
+<tr>
+<td>macd</td>
+<td style="text-align:right">−9.567</td>
+</tr>
+<tr>
+<td>macds</td>
+<td style="text-align:right">−5.935</td>
+</tr>
+<tr>
+<td>macdh</td>
+<td style="text-align:right">−3.631</td>
+</tr>
+<tr>
+<td>atr</td>
+<td style="text-align:right">8.385</td>
+</tr>
+<tr>
+<td>vwma</td>
+<td style="text-align:right">197.785</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h5>2. Executive Verdict</h5>
+<p><strong>NVDA is in an established, accelerating downtrend that just produced a capitulation-style volume event at a new seven-month low.</strong> Every trend and momentum measure is bearish and <em>deteriorating</em>, but price is simultaneously stretched (below the lower Bollinger band, RSI 27.4, 9.3% under the 10 EMA) — a configuration where bounces are violent but historically short-lived within the prevailing trend.</p>
+<p>The single most important new piece of information on 11/9 is <strong>volume: 459.1M shares, the highest of the entire 154-session dataset</strong> (prior max 306.1M on 11/5). That is roughly <strong>3.4× the ~134M 21-session average volume</strong> I calculated from the tool's OHLCV rows. Down days are now carrying expansion volume while the 11/6 bounce (+2.8%) came on <em>contracting</em> volume (180.2M). That is textbook distribution, not accumulation — although the 11/9 candle shape (close 178.67 vs open 173.07, low 170.24) leaves the door open to an absorption day that needs confirmation.</p>
+<hr />
+<h5>3. Trend Structure (Multi-Timeframe)</h5>
+<h6>Short term (days) — bearish, deeply extended</h6>
+<ul>
+<li>Close <strong>178.67 vs 10 EMA 196.969</strong> → price is <strong>9.32% below</strong> the short-term mean.</li>
+<li>The 10 EMA itself has collapsed: 230.31 (10/13) → 196.97 (11/9), a 14.5% decline in 19 sessions. It is falling <em>faster</em> than price is, which is the signature of accelerating trend, not deceleration.</li>
+<li>11/9 opened at 173.07, gapping <strong>below</strong> the prior day's low of 185.22. That left an <strong>unfilled gap between 179.92 (11/9 high) and 185.22 (11/6 low)</strong> — a concrete overhead supply pocket.</li>
+</ul>
+<h6>Medium term — bearish crossover complete</h6>
+<ul>
+<li>Close <strong>178.67 vs 50 SMA 219.00</strong> → <strong>18.4% below</strong> the medium-term mean.</li>
+<li>Note the ordering: <strong>50 SMA (219.00) still sits above the 200 SMA (204.348)</strong> — the golden-cross stack is technically intact, but the spread has compressed to <strong>14.65 points (7.2%)</strong>, and the 50 SMA is now rolling over hard because it is averaging October prices in the 210–240 band. A death cross is a credible near-term risk if price stabilizes anywhere below ~200, though I make no claim on the exact timing.</li>
+</ul>
+<h6>Long term — broken</h6>
+<ul>
+<li>Close <strong>178.67 vs 200 SMA 204.348</strong> → <strong>12.6% below</strong> the long-term benchmark. This is the pivotal technical fact: the long-term uptrend line has been lost.</li>
+<li>The 200 SMA is still <em>rising</em> (202.02 on 10/12 → 204.35 on 11/9), meaning price has fallen below a <strong>rising</strong> long-term average. That combination (rising 200 SMA + price breaking down through it) is the classic &quot;trend break, not yet trend reversal&quot; signature.</li>
+</ul>
+<h6>The drawdown in precise, tool-supported terms</h6>
+<ul>
+<li><strong>Peak-to-trough:</strong> intraday high <strong>243.37 (10/6)</strong> → intraday low <strong>170.24 (11/9)</strong> = <strong>−30.05%</strong>.</li>
+<li><strong>Close-to-close:</strong> <strong>239.24 (10/6)</strong> → <strong>178.67 (11/9)</strong> = <strong>−25.32%</strong>.</li>
+<li>The 11/9 low of 170.24 undercut the prior window low of <strong>174.351 (4/1)</strong> — lowest print in the dataset. However, the <strong>close of 178.67 held above the 4/1 close of 175.35</strong>, so the breakdown is intraday, not yet confirmed on a closing basis. That distinction matters for anyone using a closing-stop discipline.</li>
+</ul>
+<h6>Trend phase map (from the 154-row OHLCV set)</h6>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Dates</th>
+<th>Character</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uptrend</td>
+<td>4/1 (175.35) → 5/14 (235.20)</td>
+<td>+34% advance</td>
+</tr>
+<tr>
+<td>Choppy distribution</td>
+<td>5/15 → 7/29 (189.80)</td>
+<td>Range 190–235, repeated failures at 225–235</td>
+</tr>
+<tr>
+<td>Second leg up</td>
+<td>7/30 → 10/6 (239.24)</td>
+<td>New window high, intraday 243.37</td>
+</tr>
+<tr>
+<td><strong>Markdown</strong></td>
+<td><strong>10/7 → 11/9 (178.67)</strong></td>
+<td><strong>Stair-step lower highs, now vertical</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Note the last phase has produced a clean sequence of lower highs: 239.24 (10/6) → 228.52 (10/13) → 221.97 (10/21) → 217.94 (10/27) → 206.69 (11/3) → 186.64 (11/6). No single bounce has reclaimed the prior swing high since 10/6.</p>
+<hr />
+<h5>4. Momentum — Bearish and <em>Still Widening</em></h5>
+<p><strong>MACD (line −9.567 / signal −5.935 / histogram −3.631):</strong></p>
+<ul>
+<li>The line crossed <strong>below its signal on 10/12</strong> (histogram flipped from +0.119 on 10/9 to −0.444).</li>
+<li>The line crossed <strong>below zero on 10/16</strong> (MACD −0.148 vs +0.944 on 10/15).</li>
+<li>The histogram briefly contracted (−1.79 on 10/26 → −1.03 on 10/29), which looked like a possible base — then <strong>re-expanded to −3.631</strong> by 11/9. Momentum deterioration is <em>accelerating</em>, not exhausting.</li>
+<li><strong>No bullish divergence exists.</strong> Price made a lower low (214.13 on 10/16 → 178.67) and MACD made a proportionally lower low (−0.148 → −9.567). Momentum is confirming the price action, which removes the most common bottoming argument.</li>
+</ul>
+<p><strong>RSI (27.406):</strong></p>
+<ul>
+<li>Just crossed into oversold (&lt;30). Path: 67.3 (10/6) → 54.5 (10/8) → 37.6 (10/16) → 47.9 (10/21) → 35.1 (10/30) → <strong>25.4 (11/5)</strong> → 30.8 (11/6) → <strong>27.4 (11/9)</strong>.</li>
+<li>Critical nuance: <strong>RSI has now printed three successively lower oversold-region lows since 10/30 (35.1 → 33.3 → 25.4)</strong>, and the 11/5 reading of 25.4 produced only a <strong>one-day</strong> bounce to 186.64 before a new low. In this regime, oversold has been a <em>continuation</em> signal, not a reversal signal.</li>
+<li>This is exactly the warning in the indicator's own guidance: in strong trends RSI remains extreme. Do not treat 27.4 as a buy trigger in isolation.</li>
+</ul>
+<hr />
+<h5>5. Volatility — Sharp Expansion, Bands Blown Out</h5>
+<ul>
+<li><strong>ATR 8.385</strong>, up from <strong>5.589 on 10/12</strong> (+50%). ATR/price = <strong>4.69%</strong> per day, versus roughly 2.7–2.8% in mid-October. <strong>Realized daily risk has nearly doubled.</strong></li>
+<li>The 11/9 true range alone was <strong>9.68 points</strong> (170.24–179.92), which is <strong>1.15× the current ATR</strong> — so ATR will keep climbing if this persists.</li>
+<li><strong>Bollinger:</strong> close 178.67 vs lower band <strong>182.243</strong> → price is <strong>3.57 points (1.96%) below the lower band</strong>. %B ≈ <strong>−0.07</strong>.</li>
+<li><strong>But the bands are extraordinarily wide:</strong> upper 236.086 − lower 182.243 = <strong>53.84 points = 25.7% of the 209.165 middle band</strong>. A tag below a <em>2-standard-deviation band that is itself 26% wide</em> carries far less mean-reversion information than a normal-width band tag. In high-volatility trends, price rides and pierces the band.</li>
+<li>Middle band (209.165) is <strong>14.6% overhead</strong> — the 20 SMA is far too distant to act as a near-term magnet.</li>
+</ul>
+<hr />
+<h5>6. Volume Structure — The Decisive Evidence</h5>
+<ul>
+<li><strong>11/9: 459.1M</strong> (record in dataset) on a −4.27% close.</li>
+<li><strong>11/5: 306.1M</strong> on a −9.26% close (200.13 → 181.60).</li>
+<li><strong>11/6: 180.2M</strong> on a +2.78% bounce (181.60 → 186.64).</li>
+<li>Four sessions 11/4–11/9 total <strong>1,094.5M shares</strong> vs. a ~134M/day baseline.</li>
+</ul>
+<p><strong>Interpretation:</strong> volume is expanding on declines and contracting on advances. Sellers are urgent; buyers are reactive. That is the volume profile of distribution completing into markdown.</p>
+<p><strong>VWMA (197.785) is the confirmation:</strong> price sits <strong>9.66% below</strong> the volume-weighted average, and the VWMA has fallen from 231.55 (10/13) to 197.79 (11/9). Because VWMA is within 0.41% of the 10 EMA (196.969), <em>simple</em> and <em>volume-weighted</em> recent averages agree — meaning the decline is broadly participated, not the artifact of a few thin prints or one gap.</p>
+<p><strong>Caveat worth respecting:</strong> record volume + a close above the open (173.07) + a long lower shadow at a fresh low is also the anatomy of a <strong>capitulation/absorption day</strong>. It is a legitimate bullish hypothesis — it is simply <em>unconfirmed</em>. Confirmation requires a close back above 182.24 and then 185.22–186.64.</p>
+<hr />
+<h5>7. Key Levels</h5>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th style="text-align:right">Value</th>
+<th>Basis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Resistance 4</strong></td>
+<td style="text-align:right">236.09 / 243.37</td>
+<td>boll_ub / 10-6 intraday high</td>
+</tr>
+<tr>
+<td><strong>Resistance 3</strong></td>
+<td style="text-align:right">219.00</td>
+<td>50 SMA</td>
+</tr>
+<tr>
+<td><strong>Resistance 2</strong></td>
+<td style="text-align:right">204.35</td>
+<td>200 SMA (rising)</td>
+</tr>
+<tr>
+<td><strong>Resistance 1 (major)</strong></td>
+<td style="text-align:right">196.97–197.79</td>
+<td>10 EMA + VWMA cluster; also the 182.24→197.8 recovery gap</td>
+</tr>
+<tr>
+<td><strong>First cap</strong></td>
+<td style="text-align:right">182.24–185.22</td>
+<td>boll_lb reclaimed + 11/9–11/6 unfilled gap</td>
+</tr>
+<tr>
+<td><strong>Spot</strong></td>
+<td style="text-align:right"><strong>178.67</strong></td>
+<td>11/9 close</td>
+</tr>
+<tr>
+<td><strong>Support 1</strong></td>
+<td style="text-align:right">170.24</td>
+<td>11/9 low (dataset low)</td>
+</tr>
+<tr>
+<td>Derived downside ref</td>
+<td style="text-align:right">161.92</td>
+<td>2× ATR below close — <em>derived, not observed</em></td>
+</tr>
+</tbody>
+</table></div>
+<p><em>No observed support exists below 170.24 anywhere in the 2026-04-01 → 2026-11-09 window. Below that level only ATR projections apply.</em></p>
+<hr />
+<h5>8. Actionable Scenarios</h5>
+<p><strong>Scenario A — Base case (~55%): downtrend resumes after a reflex bounce.</strong>
+Rallies stall in the 182–186 zone (lower band + unfilled gap). Play: sell rallies into 182–186, stop above <strong>187.7</strong> (11/6 lower-band level) or, more conservatively, above <strong>191.25</strong> (1.5× ATR above spot). First target 170.24; extension 161.92.</p>
+<p><strong>Scenario B — Capitulation low (~25%): 11/9 was the swing low.</strong>
+Triggers, in order: (1) daily close &gt; <strong>182.24</strong>; (2) close &gt; <strong>186.64</strong> on volume ≥ the 11/6 print; (3) MACD histogram contracting two consecutive sessions. Only then is the 197.0–197.8 cluster (10 EMA / VWMA) the logical target — and that is where the next serious supply sits. Do not front-run this; a close below 170.24 invalidates it.</p>
+<p><strong>Scenario C — Acceleration (~20%): 170.24 breaks on volume.</strong>
+Measured via ATR only: 161.92 (2× ATR). Because there is no observed support in the dataset below 170.24, do not use prior &quot;support&quot; levels as stops; use volatility-scaled exits.</p>
+<p><strong>Bearish structure invalidation (for trend-followers):</strong> a close above <strong>197.79 (VWMA)</strong> neutralizes the short-term downtrend. A close above <strong>204.35 (200 SMA)</strong> restores the long-term uptrend. Anything between 186 and 197 is no-man's-land.</p>
+<hr />
+<h5>9. Risk Management &amp; Position Sizing</h5>
+<ul>
+<li>ATR = <strong>8.385 = 4.69% of price</strong>. Compared with mid-October's ~5.6–6.0 ATR, you should carry roughly <strong>55–60% of your normal position size</strong> for identical dollar risk.</li>
+<li>Worked example (1% account risk): a 1.5× ATR stop = <strong>12.58 points</strong>. On a $100,000 account risking $1,000, that is 79 shares ≈ <strong>$14,200 notional (14% of the account)</strong>. Keep NVDA-specific exposure well inside that cap given 4.7% daily range and the fact that 11/9's single-day range exceeded one ATR.</li>
+<li><strong>Do not place stops at round numbers just under 170.24.</strong> ATR of 8.4 means a routine session can travel from 178.67 to 170.29 (exactly 1 ATR) without any change in character.</li>
+<li>If long from higher levels: the trend evidence argues against averaging down; the 50&gt;200 SMA stack is the only remaining structural support for a bull thesis, and it is 7.2% from inverting.</li>
+</ul>
+<hr />
+<h5>10. Indicator Selection Rationale (8 selected)</h5>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th>Why it was chosen for <em>this</em> context</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>close_10_ema</strong></td>
+<td>Fastest read on the acceleration; quantifies how extended price is (9.3% below) for bounce timing</td>
+</tr>
+<tr>
+<td><strong>close_200_sma</strong></td>
+<td>The pivotal long-term test — price broke a <em>rising</em> 200 SMA; defines trend-regime change</td>
+</tr>
+<tr>
+<td><strong>macd</strong></td>
+<td>Measures the momentum <em>level</em>, not just direction; confirms the zero-line breakdown on 10/16</td>
+</tr>
+<tr>
+<td><strong>macdh</strong></td>
+<td>Detects whether the downtrend is accelerating or exhausting — currently re-expanding to −3.63</td>
+</tr>
+<tr>
+<td><strong>rsi</strong></td>
+<td>Oversold state and, critically, the <em>absence</em> of divergence despite lower lows</td>
+</tr>
+<tr>
+<td><strong>boll_lb</strong></td>
+<td>Blown-out band width makes band position a volatility statement, not just a mean-reversion one</td>
+</tr>
+<tr>
+<td><strong>atr</strong></td>
+<td>Essential here: ±50% volatility expansion directly governs stops and sizing</td>
+</tr>
+<tr>
+<td><strong>vwma</strong></td>
+<td>Distinguishes broad distribution (VWMA ≈ 10 EMA) from thin-print noise — decisive given record volume</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Deliberately excluded:</em> <code>close_50_sma</code> series (its value 219.00 is verified in the snapshot and used above; its message duplicates the 200 SMA test), <code>boll_ub</code>/<code>boll</code> (values taken from snapshot for band width, no separate series needed), and no second oscillator (RSI alone avoids the redundancy of adding a stochastic).</p>
+<hr />
+<h5>11. Summary Table</h5>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Reading (2026-11-09)</th>
+<th>Signal</th>
+<th>Key Number</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Close</strong></td>
+<td>178.67; gap-down open 173.07, low 170.24</td>
+<td>Bearish</td>
+<td>−4.27% d/d</td>
+</tr>
+<tr>
+<td><strong>Short trend</strong></td>
+<td>9.32% below 10 EMA (196.969)</td>
+<td>Strongly bearish</td>
+<td>10 EMA falling 14.5% since 10/13</td>
+</tr>
+<tr>
+<td><strong>Medium trend</strong></td>
+<td>18.4% below 50 SMA; 50 &gt; 200 still</td>
+<td>Bearish, stack at risk</td>
+<td>50 SMA 219.00 vs 200 SMA 204.348 (7.2% gap)</td>
+</tr>
+<tr>
+<td><strong>Long trend</strong></td>
+<td>12.6% below a <em>rising</em> 200 SMA</td>
+<td>Trend broken</td>
+<td>200 SMA 204.348</td>
+</tr>
+<tr>
+<td><strong>Momentum level</strong></td>
+<td>MACD −9.567 below signal −5.935</td>
+<td>Bearish</td>
+<td>Zero-cross 10/16, signal-cross 10/12</td>
+</tr>
+<tr>
+<td><strong>Momentum change</strong></td>
+<td>Histogram −3.631 and widening</td>
+<td>Accelerating downside</td>
+<td>From −1.03 (10/29) to −3.63</td>
+</tr>
+<tr>
+<td><strong>Oversold</strong></td>
+<td>RSI 27.406, no divergence</td>
+<td>Oversold but unreliable</td>
+<td>25.4 on 11/5 → only 1-day bounce</td>
+</tr>
+<tr>
+<td><strong>Volatility</strong></td>
+<td>ATR 8.385 (4.69% of price)</td>
+<td>Risk regime shift</td>
+<td>+50% vs 5.589 on 10/12</td>
+</tr>
+<tr>
+<td><strong>Band position</strong></td>
+<td>Close 1.96% below boll_lb 182.243; width 25.7%</td>
+<td>Stretched, low signal value</td>
+<td>%B ≈ −0.07</td>
+</tr>
+<tr>
+<td><strong>Volume</strong></td>
+<td>459.1M — dataset record, ~3.4× avg</td>
+<td>Distribution</td>
+<td>vs 180.2M on the 11/6 bounce</td>
+</tr>
+<tr>
+<td><strong>Volume-price</strong></td>
+<td>9.66% below VWMA 197.785 ≈ 10 EMA</td>
+<td>Broad-based selling</td>
+<td>231.55 (10/13) → 197.79</td>
+</tr>
+<tr>
+<td><strong>Drawdown</strong></td>
+<td>−30.05% from 243.37 (10/6 high) to 170.24</td>
+<td>Severe</td>
+<td>Close-to-close −25.32%</td>
+</tr>
+<tr>
+<td><strong>Unfilled gap</strong></td>
+<td>179.92 → 185.22</td>
+<td>Overhead supply</td>
+<td>Sets first resistance zone</td>
+</tr>
+<tr>
+<td><strong>Base case</strong></td>
+<td>Sell rallies 182–186, stop &gt; 187.7 / 191.25</td>
+<td>Short bias</td>
+<td>Target 170.24, then 161.92</td>
+</tr>
+<tr>
+<td><strong>Bull trigger</strong></td>
+<td>Close &gt; 182.24, then &gt; 186.64 on volume</td>
+<td>Unconfirmed</td>
+<td>Target 197.0–197.8</td>
+</tr>
+<tr>
+<td><strong>Trend repair</strong></td>
+<td>Close &gt; 197.79 / &gt; 204.35</td>
+<td>Not close</td>
+<td>200 SMA is the line in the sand</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Bottom line:</strong> NVDA at <strong>178.67</strong> is a broken trend with accelerating momentum, record-volume distribution, and no momentum divergence — but it is also 1.96% below an extremely wide lower band with RSI at 27.4, so the risk/reward for initiating fresh shorts <em>at</em> the low is poor. The higher-probability expression is to sell strength into <strong>182–186</strong> (or <strong>186.64–197.8</strong> if the bounce extends) with tight ATR-scaled stops, while treating the record-volume, long-lower-shadow 11/9 candle as a <em>watch item</em> for a scenario-B capitulation low — confirmed only by a close above 182.24 followed by 186.64 on expanding volume.</p>
+</section><section id="s2"><h2>II. Research Team Decision</h2><h3 id="s2-1">Bull Researcher</h3>
+<p>Bull Analyst: <strong>Bull opening: NVDA — buy the panic, not the narrative</strong></p>
+<p>Bear, the tape is ugly. I’m not going to pretend otherwise. NVDA closed at <strong>178.67</strong>, below the 10 EMA at <strong>196.969</strong>, below the 50 SMA at <strong>219.00</strong>, below the rising 200 SMA at <strong>204.348</strong>, with RSI at <strong>27.406</strong> and MACD at <strong>−9.567</strong>. That is a real markdown.</p>
+<p>But here is where the bear case overreaches: it treats a violent technical unwind as proof that NVDA is uninvestable. I see the opposite. The report’s own data show a stock that has fallen <strong>−30.05%</strong> from its 10/6 intraday high of <strong>243.37</strong> to the 11/9 low of <strong>170.24</strong>, and is now showing the anatomy of a potential capitulation/absorption event.</p>
+<p><strong>1. The 11/9 candle is not clean distribution.</strong><br />
+The bear will point to record volume—<strong>459.1M shares</strong>, about <strong>3.4×</strong> the ~134M average. Fair. But look at the candle: NVDA opened at <strong>173.07</strong>, traded as low as <strong>170.24</strong>, and closed at <strong>178.67</strong>, just <strong>1.25 points</strong> below the high and <strong>8.43 points</strong> above the low. That is a close in the upper <strong>87%</strong> of the daily range on record volume at a fresh low. That is not what textbook distribution looks like. That looks like demand absorbing panic supply. It needs confirmation—yes—but it is a legitimate bottoming signal, not a reason to short the low.</p>
+<p><strong>2. The bear’s “no support below 170.24” argument cuts both ways.</strong><br />
+Correct: below <strong>170.24</strong> there is no observed support in the dataset. But the bear needs a close below that level to confirm acceleration. It has not happened. Meanwhile, from <strong>178.67</strong>, downside to <strong>170.24</strong> is <strong>4.7%</strong>. Upside to the 10 EMA/VWMA cluster at <strong>196.97–197.79</strong> is about <strong>10.6%</strong>; to the 200 SMA at <strong>204.35</strong> is <strong>14.4%</strong>; to the 50 SMA at <strong>219.00</strong> is <strong>22.6%</strong>. With a defined stop below <strong>170.24</strong>, the asymmetry favors the bull. The technical report itself says initiating fresh shorts at the low is poor risk/reward. I agree—and that is exactly why the long side has a shot.</p>
+<p><strong>3. The long-term structure is wounded, not dead.</strong><br />
+Yes, NVDA is <strong>12.6%</strong> below the 200 SMA. But the 50 SMA is still above the 200 SMA—<strong>219.00 vs. 204.348</strong>, a <strong>7.2%</strong> spread. The 200 SMA is still rising, from <strong>202.02</strong> on 10/12 to <strong>204.35</strong> on 11/9. And despite the intraday break below the April low, the 11/9 close of <strong>178.67</strong> held above the 4/1 close of <strong>175.35</strong>. A death cross is a risk, not a fact, and it is a lagging event. I do not need NVDA to reclaim <strong>219</strong> tomorrow. I need it to hold <strong>170.24</strong> and reclaim <strong>182.24</strong>, then <strong>186.64</strong>.</p>
+<p><strong>4. Bear momentum is extreme and crowded.</strong><br />
+MACD at <strong>−9.567</strong> with a histogram of <strong>−3.631</strong> is not early-cycle short territory; it is late-stage, stretched territory. RSI at <strong>27.406</strong> and price <strong>1.96%</strong> below the lower Bollinger band at <strong>182.243</strong> tell me downside is extended. The bear is right that oversold can stay oversold—but the burden is now on the bear to break <strong>170.24</strong> on volume. If that fails, the snapback can be violent, especially with the 11/9 record-volume lower shadow.</p>
+<p><strong>5. Growth and moat still matter.</strong><br />
+I will not fabricate a revenue projection because no fundamentals report was supplied in this run. But the absence of a fundamentals report is not evidence of deterioration. NVDA’s competitive advantage remains the full-stack accelerated-computing platform: data-center GPUs, networking, software, and the CUDA developer ecosystem. That creates switching costs and scalability across AI training, inference, and enterprise deployment. The AI infrastructure buildout is a multi-year growth runway. A <strong>30%</strong> drawdown in a category leader is exactly where long-term investors should get interested, not where they should abandon the franchise.</p>
+<p><strong>Countering the obvious bear points directly:</strong></p>
+<ul>
+<li><strong>“Record volume means distribution.”</strong> Record volume with a close above the open and <strong>8.4 points</strong> off the low is at least a two-sided absorption event. Demand showed up.</li>
+<li><strong>“RSI has no bullish divergence.”</strong> True—but RSI <strong>27.4</strong> plus a capitulation candle is not a short signal. It is a warning that downside is extended.</li>
+<li><strong>“Price broke the 200 SMA.”</strong> It broke below a <em>rising</em> 200 SMA, but the 50&gt;200 stack is still intact. The long-term trend is damaged, not confirmed broken.</li>
+<li><strong>“Death cross risk.”</strong> Lagging. If NVDA reclaims <strong>182–186</strong>, the death-cross narrative gets crowded fast.</li>
+</ul>
+<p><strong>How I would invest:</strong><br />
+Accumulate NVDA in tranches, not all at once. Start small at current levels only with a hard risk limit below <strong>170.24</strong>, or an ATR-scaled stop around <strong>1.5× ATR = 12.6 points</strong>. Add on a daily close above <strong>182.24</strong>; add again above <strong>186.64</strong> on expanding volume; add above <strong>197.79</strong> if the bounce proves itself. Use roughly <strong>55–60%</strong> of normal position size because ATR is <strong>8.385</strong>, or <strong>4.69%</strong> of price. First target <strong>197–198</strong>, then <strong>204.35</strong>, then <strong>219.00</strong>. If NVDA closes below <strong>170.24</strong> on volume, stand aside—that is the bear’s confirmation, not mine.</p>
+<p><strong>Bottom line:</strong> The bear is right about the trend. But the bear is wrong to treat a <strong>30%</strong> drawdown, RSI <strong>27.4</strong>, record volume, and a close <strong>8.4 points</strong> off the low as a reason to sell. That combination is how capitulations look. NVDA’s moat and AI growth optionality give the long-term upside; the technicals give us a tight invalidation level. I am a buyer in tranches, with confirmation triggers—not a hero at the low. That is the stronger case.
+Bull Analyst: <strong>Bull final rebuttal: NVDA — the bear is right about everything except the conclusion</strong></p>
+<p>Bear, I'll paste your argument back so we're arguing the same document:</p>
+<blockquote>
+<p><strong>Bear rebuttal: NVDA — don't confuse a violent bounce setup with an investable bottom</strong></p>
+<p>Bull, I'll give you the obvious: NVDA is oversold, extended, and due for a reflex bounce. But your conclusion — &quot;buy the panic&quot; — asks investors to underwrite an <strong>unconfirmed</strong> capitulation candle while every verified trend, momentum, and volume signal is still bearish. That's not asymmetry. That's catching a falling knife and calling the handle a bargain.</p>
+<p>Let's debate the tape point by point.</p>
+<h6>1. The 11/9 candle is not confirmed absorption — it's a hypothesis</h6>
+<p>You're right that NVDA opened at <strong>173.07</strong>, traded to <strong>170.24</strong>, and closed at <strong>178.67</strong>, in the upper <strong>87%</strong> of the daily range on record volume of <strong>459.1M</strong>. That is a long lower shadow. It is <em>potentially</em> an absorption day.</p>
+<p>But here's what you're skipping: NVDA still closed <strong>−4.27%</strong>, below the lower Bollinger band at <strong>182.243</strong>, below the unfilled gap zone of <strong>179.92–185.22</strong>, and below every major moving average. The &quot;strong close&quot; couldn't even reclaim the first resistance level. And the 11/6 bounce came on just <strong>180.2M</strong> shares versus <strong>459.1M</strong> on the 11/9 decline. That is not confirmed demand — it's sellers being urgent and buyers being reactive.</p>
+<p>You say &quot;demand showed up.&quot; Maybe. But confirmation requires a close above <strong>182.24</strong> and then above <strong>186.64</strong> on expanding volume. Until that happens, the distribution interpretation is at least as valid as the capitulation interpretation. You're buying the hypothesis, not the evidence.</p>
+<h6>2. Your &quot;asymmetry&quot; argument is misleading</h6>
+<p>You frame it as <strong>4.7% downside</strong> to <strong>170.24</strong> versus <strong>10.6% upside</strong> to the <strong>196.97–197.79</strong> 10 EMA/VWMA cluster. But that ignores probability and resistance.</p>
+<p>The path from <strong>178.67</strong> to <strong>197.79</strong> is littered with supply: <strong>182.24</strong>, <strong>185.22</strong>, <strong>186.64</strong>, then the falling 10 EMA/VWMA. That's not a clean upside target — that's a wall of overhead resistance in a confirmed downtrend. Meanwhile, below <strong>170.24</strong>, there is <strong>no observed support</strong> in the entire 2026-04-01 to 2026-11-09 dataset. If that level breaks, the ATR-derived downside reference is <strong>161.92</strong>, roughly another <strong>9.4%</strong> below spot.</p>
+<p>And your stop? With ATR at <strong>8.385</strong>, or <strong>4.69% of price</strong>, a stop just below <strong>170.24</strong> is not a safe defined-risk level. The 11/9 true range alone was <strong>9.68 points</strong>, already above one ATR. NVDA can sweep that low intraday without changing trend character. A tight stop near a dataset low is exactly where liquidity sits.</p>
+<p>I actually agree with the technical report: initiating fresh shorts <em>right at</em> <strong>178.67</strong> is poor risk/reward. But that does not make NVDA a good long. A bad short entry is not a bull thesis. The better bear expression is to avoid new investment and sell strength into <strong>182–186</strong>, not to buy hope at the low.</p>
+<h6>3. &quot;Wounded, not dead&quot; long-term structure — but the burden is on the bull</h6>
+<p>You point to the 50 SMA still above the 200 SMA: <strong>219.00 vs. 204.348</strong>, a <strong>7.2%</strong> spread. True. But that is a lagging stack that is compressing fast, and the 50 SMA is rolling over because it is averaging October prices in the <strong>210–240</strong> band.</p>
+<p>The more important fact is that NVDA is <strong>12.6% below a rising 200 SMA</strong>. That is the classic trend-break signature: price has lost a rising long-term benchmark. The 200 SMA rising does not make it support — it makes the break more meaningful. And the 11/9 low of <strong>170.24</strong> undercut the prior dataset low of <strong>174.351</strong>, even if the close held above the 4/1 close of <strong>175.35</strong>. A close-based hold is better than nothing, but it does not erase the fact that the market printed the lowest price in the entire window.</p>
+<p>You say a death cross is &quot;lagging.&quot; Sure. But lagging confirmation of a downtrend is still confirmation. If NVDA stabilizes below <strong>200</strong>, the 50/200 inversion risk rises. I don't need to predict the exact date to recognize the direction of travel.</p>
+<h6>4. &quot;Extreme and crowded&quot; is unsupported — and momentum is still widening</h6>
+<p>You call MACD at <strong>−9.567</strong> and RSI at <strong>27.406</strong> &quot;late-stage, stretched territory.&quot; But the verified data show momentum is still deteriorating, not exhausting.</p>
+<ul>
+<li>MACD histogram briefly contracted from <strong>−1.79</strong> on 10/26 to <strong>−1.03</strong> on 10/29, then <strong>re-expanded to −3.631</strong> by 11/9. That is acceleration, not exhaustion.</li>
+<li>There is <strong>no bullish divergence</strong>: price made lower lows and MACD made lower lows with it.</li>
+<li>RSI at <strong>25.4</strong> on 11/5 produced only a <strong>one-day</strong> bounce before NVDA made a new low. In this regime, oversold has been a continuation signal.</li>
+<li>Price is <strong>1.96% below the lower Bollinger band</strong>, but the bands are <strong>25.7% wide</strong>. A tag below an extremely wide lower band carries much less mean-reversion information than a normal-width tag.</li>
+</ul>
+<p>And &quot;crowded&quot;? There is no sentiment report in this run. You cannot use crowding as evidence when the only verified data is price, volume, and momentum — and all three are bearish.</p>
+<h6>5. The moat argument is not enough here</h6>
+<p>Bull, I'm not going to pretend the absence of a fundamentals report proves NVDA is deteriorating. It doesn't. But it also means your CUDA/ecosystem/AI-growth argument is <strong>unquantified</strong> in this debate. You're leaning on a qualitative moat while the verified market data shows record-volume distribution and a broken technical structure.</p>
+<p>A great company can be a bad investment at the wrong point in the cycle. NVDA is <strong>−30.05%</strong> from its 10/6 intraday high of <strong>243.37</strong> to the 11/9 low of <strong>170.24</strong>, with <strong>ATR up roughly 50%</strong> since mid-October. That is a risk-regime shift. Competitive strength does not protect investors from a de-rating, a positioning unwind, or a liquidity event. Leadership is not a bottom signal.</p>
+<h6>My bear stance on NVDA</h6>
+<ul>
+<li><strong>Do not buy NVDA at 178.67 just because it is oversold.</strong> Oversold in a downtrend has repeatedly failed here.</li>
+<li><strong>Sell rallies into 182–186</strong> if they stall; a close back above <strong>186.64</strong> on volume would be the first real challenge to the bear case.</li>
+<li>A close below <strong>170.24</strong> confirms the next leg; ATR-based downside reference is <strong>161.92</strong>, with no observed support below the 11/9 low.</li>
+<li>Trend repair is not &quot;maybe reclaim 182.&quot; It requires a close above <strong>197.79</strong> to neutralize the short-term downtrend and above <strong>204.35</strong> to restore the long-term trend. That is far away.</li>
+<li>Risk sizing must reflect <strong>4.69% daily ATR</strong>. Anyone long NVDA is carrying far more realized risk than the bull's &quot;tranche&quot; language implies.</li>
+</ul>
+<p><strong>Bottom line:</strong> The bull is right that NVDA is stretched and could bounce. But he is wrong to treat a long lower shadow, RSI at <strong>27.4</strong>, and a 30% drawdown as sufficient proof of a bottom. The verified evidence still shows a broken trend, accelerating negative momentum, record volume on declines, a failed bounce on lighter volume, and no confirmed reversal signal. NVDA is a <strong>sell-strength / avoid-new-money</strong> setup until it proves otherwise — not a buy-the-panic investment.</p>
+</blockquote>
+<p>Now let me take your five points head-on, because three of them are fair, one is checkable, and one is simply wrong.</p>
+<h6>1. You keep saying &quot;unconfirmed&quot; like it's a refutation. It's my entire thesis.</h6>
+<p>You wrote: <em>&quot;confirmation requires a close above 182.24 and then above 186.64 on expanding volume.&quot;</em> Bear — that's literally my published trigger list. I said it first, in the opening: add above <strong>182.24</strong>, add above <strong>186.64</strong> on expanding volume, add above <strong>197.79</strong> only if the bounce proves itself.</p>
+<p>So we don't actually disagree about what confirmation looks like. We disagree about <strong>what to do before it arrives.</strong> You want zero exposure. I want a small, hard-capped first tranche at <strong>178.67</strong> because the entry price matters. Your plan buys the same stock at the same confirmation levels — just 2% to 10.6% higher, after the move has already paid the people who stepped in at the low. That's not risk management. That's paying a premium for the comfort of hindsight.</p>
+<h6>2. You cite the asymmetry numbers correctly, then refuse to run the math on them.</h6>
+<p>You wrote: <em>&quot;4.7% downside to 170.24 versus 10.6% upside to 196.97–197.79... ignores probability.&quot;</em> Fine. Let's talk probability, honestly.</p>
+<p>Your own technical report assigns: <strong>~55%</strong> base case that the downtrend resumes <em>after a reflex bounce</em>; <strong>~25%</strong> capitulation low; <strong>~20%</strong> acceleration. Now — you are bearish, so read your own probabilities back to yourself. In <strong>80% of your own scenarios</strong>, NVDA bounces first. In 55% it bounces into 182–186. In 25% it bounces all the way to 197–198. The &quot;acceleration now&quot; path is your <strong>20% tail</strong>, and it requires a <em>close</em> below <strong>170.24</strong> that has not happened — your words, not mine.</p>
+<p>So my near-term expected value isn't &quot;4.7% vs 10.6%.&quot; It's: small risk against a bounce that your base case says is the <em>most likely</em> next move, with a hard invalidation 4.7% away. You call that a falling knife. I call that a defined-risk entry into the highest-probability near-term path in your own scenario map.</p>
+<h6>3. The resistance wall is real — and it's why I scale, not why I abstain.</h6>
+<p>You wrote: <em>&quot;The path from 178.67 to 197.79 is littered with supply: 182.24, 185.22, 186.64, then the falling 10 EMA/VWMA.&quot;</em> Correct. And here's the thing: <strong>182.24 and 186.64 are exactly where I add.</strong> Your &quot;sell strength into 182–186&quot; zone is my second and third tranche. If the bounce dies there, I've risked a small starter position with a stop below <strong>170.24</strong> — and I've lost a fraction of a normal position at 55–60% sizing. If the bounce <em>clears</em> 186.64 on volume, your wall has become my confirmation, and the next leg toward the 10 EMA/VWMA cluster is on.</p>
+<p>You framed resistance as a reason not to own it. I frame it as a reason to own a <em>little</em> now and <em>more</em> on proof. One of us is managing the position; the other is just managing the narrative.</p>
+<h6>4. On the stop: you're attacking a stop I didn't propose, and ignoring my sizing.</h6>
+<p>You wrote: <em>&quot;a stop just below 170.24 is not a safe defined-risk level... NVDA can sweep that low intraday.&quot;</em> I agree — which is why I never proposed a resting stop at the low. My risk limit is a <strong>close below 170.24</strong>, and my sizing is explicitly reduced: <strong>55–60% of normal position size</strong> because ATR is <strong>8.385, or 4.69% of price</strong>. You wrote that sizing note into your own list — <em>&quot;anyone long NVDA is carrying far more realized risk than the bull's tranche language implies.&quot;</em> No, Bear. Reduced sizing is precisely what makes a 4.7%-away invalidation survivable. A 0.5x-sized tranche with a 4.7% closing invalidation is a <strong>~2.4% account-level risk</strong>, not a liquidity donation to the sweepers.</p>
+<p>The 11/9 true range of <strong>9.68 points</strong> doesn't scare me out of the trade — it tells me how much room to give it. That's what ATR is <em>for</em>.</p>
+<h6>5. The RSI claim: checkable, and the data says you're too absolute.</h6>
+<p>You wrote: <em>&quot;There is no bullish divergence: price made lower lows and MACD made lower lows with it.&quot;</em> That's true of MACD, and I'll own it — MACD hasn't diverged. But you've conflated the two indicators, and on RSI the tape is more interesting than your sentence allows.</p>
+<p>Per the report's own RSI path: <strong>25.4 on 11/5</strong>, then <strong>30.8 on 11/6</strong>, then <strong>27.4 on 11/9</strong>. Meanwhile price went from a <strong>181.60 close (11/5)</strong> to a <strong>178.67 close (11/9)</strong> — a <em>lower closing low</em> — while RSI printed <em>higher</em> than its 11/5 trough. That is the <strong>first nascent positive divergence in the entire markdown</strong>. Is it a confirmed bottom? No. Is it the kind of crack that precedes reflex rallies when combined with a record-volume, upper-87%-of-range close at a fresh low? Historically, yes — and your &quot;oversold has been a continuation signal&quot; claim rests on a sample of roughly <strong>two</strong> oversold touches in three weeks (10/30 and 11/5). Two observations is not a regime; it's a small sample inside a violent move.</p>
+<h6>6. Your strongest point is the 50/200 stack — and I still think it favors me.</h6>
+<p>You wrote: <em>&quot;The more important fact is that NVDA is 12.6% below a rising 200 SMA.&quot;</em> Fair. But you can't have it both ways. A rising 200 SMA at <strong>204.348</strong> means the long-term trend <em>is still up</em> — it's the price that's broken, not the benchmark. And you concede the <strong>50 SMA at 219.00 remains 7.2% above the 200 SMA</strong>. The death cross you're worried about needs NVDA to stabilize <em>below ~200 for weeks</em> to unfold. In that window, a 4.69%-ATR stock with RSI in the 20s does not drift — it snaps. And note what your own data emphasizes: the <strong>11/9 close of 178.67 held above the 4/1 close of 175.35</strong>. That's not nothing. That's the structural low of the dataset holding on a closing basis on the heaviest volume in the window. Buyers defended the level. You acknowledge it and then wave it away.</p>
+<h6>7. On crowding and the moat: I'll accept the burden you're imposing.</h6>
+<p>You wrote: <em>&quot;There is no sentiment report in this run. You cannot use crowding as evidence.&quot;</em> Fine — I'll amend my words. I won't claim surveys I don't have. I'll use what <em>is</em> verified: a <strong>−30.05% drawdown in 24 sessions</strong>, ATR <strong>+50%</strong> since mid-October, RSI at <strong>27.4</strong>, and a record-volume day closing in the upper <strong>87%</strong> of its range. Whether or not you call it &quot;crowded,&quot; that combination describes a market where the marginal seller has already been forced out at a low, not a market where fresh supply is waiting to hit bids at the low. And my moat claim? You're right that no fundamentals report quantified it here. But the absence of a fundamentals report is symmetric — it doesn't prove deterioration any more than it proves growth. What I <em>can</em> say without fabrication: nothing in this run's data shows a broken franchise; it shows a repriced one. A 30% drawdown in the dominant accelerated-computing platform, with CUDA's switching costs and the AI infrastructure buildout, is a valuation reset inside an intact secular trend — not proof the moat failed.</p>
+<h6>Your bottom line vs. mine</h6>
+<p>You wrote: <em>&quot;A bad short entry is not a bull thesis.&quot;</em> Agreed. But a bad long entry isn't a bear thesis either — and <strong>178.67 is not where the bear is shorting.</strong> You won't short here. You won't buy here. You've positioned yourself at <strong>182–186</strong>, selling into a zone where your own base case says the bounce is <em>most likely to arrive</em>. So let me put the question to you plainly, Bear: <strong>if not at 30% down, with RSI at 27, a record-volume close in the upper 87% of the range, the dataset low held on a closing basis, and a defined invalidation 4.7% away — then at what price does your &quot;avoid-new-money&quot; stance ever become a buy stance?</strong> Because from where I sit, your plan waits for <strong>197.79</strong> to &quot;neutralize the downtrend&quot; — which means buying <strong>10.6% above spot</strong> after the reflex rally your own scenario map says is coming. That's not prudence. That's a commitment to buying late.</p>
+<p><strong>My stance on NVDA, unchanged and strengthened:</strong> Buy in tranches. Starter at <strong>178.67</strong>, hard closing invalidation below <strong>170.24</strong>, sized at <strong>55–60% of normal</strong> because ATR is <strong>8.385 (4.69%)</strong>. Add on a daily close above <strong>182.24</strong>. Add above <strong>186.64</strong> on expanding volume. Add above <strong>197.79</strong> only if the bounce proves itself. Targets: <strong>197–198</strong>, then <strong>204.35</strong>, then <strong>219.00</strong>. If NVDA closes below <strong>170.24</strong> on volume, I'm out — and the bear gets the trade.</p>
+<p>You're right that 11/9 is unconfirmed. That's why I'm buying a tranche, not a thesis. The bear wants certainty. The bull wants asymmetry. At <strong>178.67</strong>, with the evidence above, the asymmetry is mine.</p>
+<h3 id="s2-2">Bear Researcher</h3>
+<p>Bear Analyst: <strong>Bear rebuttal: NVDA — don’t confuse a violent bounce setup with an investable bottom</strong></p>
+<p>Bull, I’ll give you the obvious: NVDA is oversold, extended, and due for a reflex bounce. But your conclusion — “buy the panic” — asks investors to underwrite an <strong>unconfirmed</strong> capitulation candle while every verified trend, momentum, and volume signal is still bearish. That’s not asymmetry. That’s catching a falling knife and calling the handle a bargain.</p>
+<p>Let’s debate the tape point by point.</p>
+<h6>1. The 11/9 candle is not confirmed absorption — it’s a hypothesis</h6>
+<p>You’re right that NVDA opened at <strong>173.07</strong>, traded to <strong>170.24</strong>, and closed at <strong>178.67</strong>, in the upper <strong>87%</strong> of the daily range on record volume of <strong>459.1M</strong>. That is a long lower shadow. It is <em>potentially</em> an absorption day.</p>
+<p>But here’s what you’re skipping: NVDA still closed <strong>−4.27%</strong>, below the lower Bollinger band at <strong>182.243</strong>, below the unfilled gap zone of <strong>179.92–185.22</strong>, and below every major moving average. The “strong close” couldn’t even reclaim the first resistance level. And the 11/6 bounce came on just <strong>180.2M</strong> shares versus <strong>459.1M</strong> on the 11/9 decline. That is not confirmed demand — it’s sellers being urgent and buyers being reactive.</p>
+<p>You say “demand showed up.” Maybe. But confirmation requires a close above <strong>182.24</strong> and then above <strong>186.64</strong> on expanding volume. Until that happens, the distribution interpretation is at least as valid as the capitulation interpretation. You’re buying the hypothesis, not the evidence.</p>
+<h6>2. Your “asymmetry” argument is misleading</h6>
+<p>You frame it as <strong>4.7% downside</strong> to <strong>170.24</strong> versus <strong>10.6% upside</strong> to the <strong>196.97–197.79</strong> 10 EMA/VWMA cluster. But that ignores probability and resistance.</p>
+<p>The path from <strong>178.67</strong> to <strong>197.79</strong> is littered with supply: <strong>182.24</strong>, <strong>185.22</strong>, <strong>186.64</strong>, then the falling 10 EMA/VWMA. That’s not a clean upside target — that’s a wall of overhead resistance in a confirmed downtrend. Meanwhile, below <strong>170.24</strong>, there is <strong>no observed support</strong> in the entire 2026-04-01 to 2026-11-09 dataset. If that level breaks, the ATR-derived downside reference is <strong>161.92</strong>, roughly another <strong>9.4%</strong> below spot.</p>
+<p>And your stop? With ATR at <strong>8.385</strong>, or <strong>4.69% of price</strong>, a stop just below <strong>170.24</strong> is not a safe defined-risk level. The 11/9 true range alone was <strong>9.68 points</strong>, already above one ATR. NVDA can sweep that low intraday without changing trend character. A tight stop near a dataset low is exactly where liquidity sits.</p>
+<p>I actually agree with the technical report: initiating fresh shorts <em>right at</em> <strong>178.67</strong> is poor risk/reward. But that does not make NVDA a good long. A bad short entry is not a bull thesis. The better bear expression is to avoid new investment and sell strength into <strong>182–186</strong>, not to buy hope at the low.</p>
+<h6>3. “Wounded, not dead” long-term structure — but the burden is on the bull</h6>
+<p>You point to the 50 SMA still above the 200 SMA: <strong>219.00 vs. 204.348</strong>, a <strong>7.2%</strong> spread. True. But that is a lagging stack that is compressing fast, and the 50 SMA is rolling over because it is averaging October prices in the <strong>210–240</strong> band.</p>
+<p>The more important fact is that NVDA is <strong>12.6% below a rising 200 SMA</strong>. That is the classic trend-break signature: price has lost a rising long-term benchmark. The 200 SMA rising does not make it support — it makes the break more meaningful. And the 11/9 low of <strong>170.24</strong> undercut the prior dataset low of <strong>174.351</strong>, even if the close held above the 4/1 close of <strong>175.35</strong>. A close-based hold is better than nothing, but it does not erase the fact that the market printed the lowest price in the entire window.</p>
+<p>You say a death cross is “lagging.” Sure. But lagging confirmation of a downtrend is still confirmation. If NVDA stabilizes below <strong>200</strong>, the 50/200 inversion risk rises. I don’t need to predict the exact date to recognize the direction of travel.</p>
+<h6>4. “Extreme and crowded” is unsupported — and momentum is still widening</h6>
+<p>You call MACD at <strong>−9.567</strong> and RSI at <strong>27.406</strong> “late-stage, stretched territory.” But the verified data show momentum is still deteriorating, not exhausting.</p>
+<ul>
+<li>MACD histogram briefly contracted from <strong>−1.79</strong> on 10/26 to <strong>−1.03</strong> on 10/29, then <strong>re-expanded to −3.631</strong> by 11/9. That is acceleration, not exhaustion.</li>
+<li>There is <strong>no bullish divergence</strong>: price made lower lows and MACD made lower lows with it.</li>
+<li>RSI at <strong>25.4</strong> on 11/5 produced only a <strong>one-day</strong> bounce before NVDA made a new low. In this regime, oversold has been a continuation signal.</li>
+<li>Price is <strong>1.96% below the lower Bollinger band</strong>, but the bands are <strong>25.7% wide</strong>. A tag below an extremely wide lower band carries much less mean-reversion information than a normal-width tag.</li>
+</ul>
+<p>And “crowded”? There is no sentiment report in this run. You cannot use crowding as evidence when the only verified data is price, volume, and momentum — and all three are bearish.</p>
+<h6>5. The moat argument is not enough here</h6>
+<p>Bull, I’m not going to pretend the absence of a fundamentals report proves NVDA is deteriorating. It doesn’t. But it also means your CUDA/ecosystem/AI-growth argument is <strong>unquantified</strong> in this debate. You’re leaning on a qualitative moat while the verified market data shows record-volume distribution and a broken technical structure.</p>
+<p>A great company can be a bad investment at the wrong point in the cycle. NVDA is <strong>−30.05%</strong> from its 10/6 intraday high of <strong>243.37</strong> to the 11/9 low of <strong>170.24</strong>, with <strong>ATR up roughly 50%</strong> since mid-October. That is a risk-regime shift. Competitive strength does not protect investors from a de-rating, a positioning unwind, or a liquidity event. Leadership is not a bottom signal.</p>
+<h6>My bear stance on NVDA</h6>
+<ul>
+<li><strong>Do not buy NVDA at 178.67 just because it is oversold.</strong> Oversold in a downtrend has repeatedly failed here.</li>
+<li><strong>Sell rallies into 182–186</strong> if they stall; a close back above <strong>186.64</strong> on volume would be the first real challenge to the bear case.</li>
+<li>A close below <strong>170.24</strong> confirms the next leg; ATR-based downside reference is <strong>161.92</strong>, with no observed support below the 11/9 low.</li>
+<li>Trend repair is not “maybe reclaim 182.” It requires a close above <strong>197.79</strong> to neutralize the short-term downtrend and above <strong>204.35</strong> to restore the long-term trend. That is far away.</li>
+<li>Risk sizing must reflect <strong>4.69% daily ATR</strong>. Anyone long NVDA is carrying far more realized risk than the bull’s “tranche” language implies.</li>
+</ul>
+<p><strong>Bottom line:</strong> The bull is right that NVDA is stretched and could bounce. But he is wrong to treat a long lower shadow, RSI at <strong>27.4</strong>, and a 30% drawdown as sufficient proof of a bottom. The verified evidence still shows a broken trend, accelerating negative momentum, record volume on declines, a failed bounce on lighter volume, and no confirmed reversal signal. NVDA is a <strong>sell-strength / avoid-new-money</strong> setup until it proves otherwise — not a buy-the-panic investment.
+Bear Analyst: <strong>Bear final: NVDA — a bounce is not a bottom, and a trade is not an investment</strong></p>
+<p>Bull, I’ll grant you the obvious: NVDA is stretched, oversold, and vulnerable to a violent reflex rally. That is not the debate. The debate is whether <strong>178.67</strong> is an investable entry or a falling-knife trade dressed up as accumulation. On the verified evidence, it’s the latter.</p>
+<p>You’ve made the best case for a bounce. You have not made the case for buying a broken trend before it proves itself.</p>
+<h6>1. Your “80% bounce” probability argument actually supports the bear case</h6>
+<p>You’re reading the scenario map selectively. The report says:</p>
+<ul>
+<li><strong>55% base case:</strong> downtrend resumes after a reflex bounce.</li>
+<li><strong>25% capitulation low:</strong> 11/9 was the swing low.</li>
+<li><strong>20% acceleration:</strong> 170.24 breaks and NVDA goes to 161.92.</li>
+</ul>
+<p>You say “80% of scenarios bounce first.” Fine. But in the <strong>55% base case</strong>, the bounce stalls at <strong>182–186</strong> and the downtrend resumes. That is not a long thesis — that is a sell-into-strength map. Your first two add points, <strong>182.24</strong> and <strong>186.64</strong>, sit directly in that supply zone.</p>
+<p>So let’s run the realistic math, not the cherry-picked tail. From <strong>178.67</strong>:</p>
+<ul>
+<li>Upside to <strong>182.24</strong> is only <strong>+2.0%</strong>.</li>
+<li>Upside to <strong>186.64</strong> is only <strong>+4.5%</strong>.</li>
+<li>The <strong>197.79</strong> target is <strong>+10.6%</strong>, but it belongs to the <strong>25%</strong> capitulation scenario and requires confirmation you don’t have.</li>
+<li>Downside to <strong>170.24</strong> is <strong>−4.7%</strong>, and below that there is <strong>no observed support</strong> in the dataset. The ATR-derived reference is <strong>161.92</strong>, roughly <strong>−9.4%</strong>.</li>
+</ul>
+<p>You are risking a 4.7% invalidation — with gap risk through that level — to make 2–4% in your own base case. That isn’t asymmetry. That’s a low-reward bounce trade with a high-volatility tail.</p>
+<h6>2. The 11/9 candle is still a hypothesis, not confirmation</h6>
+<p>Yes, NVDA opened <strong>173.07</strong>, traded <strong>170.24</strong>, and closed <strong>178.67</strong> — a long lower shadow in the upper part of the range on record volume of <strong>459.1M</strong>. I’ll concede that is <em>potentially</em> absorption.</p>
+<p>But what did the close actually reclaim? Nothing that matters.</p>
+<p>NVDA closed <strong>−4.27%</strong>, still below the lower Bollinger band at <strong>182.243</strong>, still below the unfilled gap zone of <strong>179.92–185.22</strong>, still below every major moving average. The 11/6 bounce came on only <strong>180.2M</strong> shares and failed within a day. The 11/9 decline came on <strong>459.1M</strong> — roughly <strong>3.4×</strong> the ~134M average.</p>
+<p>That is still the volume profile of urgent sellers and reactive buyers. Until NVDA closes above <strong>182.24</strong> and then above <strong>186.64</strong> on expanding volume, “absorption” is a hypothesis. Distribution is at least as valid a read.</p>
+<h6>3. Your stop is not as clean as you present it</h6>
+<p>You say your risk is a close below <strong>170.24</strong>, and you size at 55–60% of normal because ATR is <strong>8.385</strong>, or <strong>4.69%</strong> of price. That is better than a naive stop at the low. But it does not make the trade safe.</p>
+<p>The 11/9 true range alone was <strong>9.68 points</strong>, already above one ATR. A close-below-170.24 stop can gap through. In a stock with <strong>4.69% daily ATR</strong>, record volume, and a fresh dataset low, the realized loss below the stop is not guaranteed to be 4.7%. It can be worse. And because you plan to add at <strong>182.24</strong> and <strong>186.64</strong>, you are adding into overhead supply before the reversal is confirmed.</p>
+<p>That’s not “managing the position.” That’s averaging up into resistance and calling it tranching.</p>
+<h6>4. The RSI divergence is real but weak — and MACD is still widening</h6>
+<p>I’ll give you the checkable point: RSI went <strong>25.4 on 11/5 → 30.8 on 11/6 → 27.4 on 11/9</strong> while price made a lower close. That is a nascent positive divergence. Fine.</p>
+<p>But let’s not overstate it. RSI is still <strong>27.4</strong>, below 30. Price is still <strong>1.96% below the lower Bollinger band</strong>. The bands are <strong>25.7% wide</strong>, so a band tag carries far less mean-reversion information than normal. And the dominant momentum gauge is not diverging — MACD is <strong>−9.567</strong>, below its signal at <strong>−5.935</strong>, with the histogram re-expanding to <strong>−3.631</strong>. That is acceleration, not exhaustion.</p>
+<p>One two-session RSI divergence inside a violent markdown is not a bottom signal. The 11/5 oversold reading produced a one-day bounce before NVDA made a new low. That is the recent regime.</p>
+<h6>5. “Wounded, not dead” still means don’t buy before proof</h6>
+<p>You keep pointing to the <strong>50 SMA above the 200 SMA</strong> — <strong>219.00 vs. 204.348</strong>, a <strong>7.2%</strong> spread. True. But that is a lagging stack that is compressing. The more important fact is that NVDA is <strong>12.6% below a rising 200 SMA</strong>. Price has lost a rising long-term benchmark. That is a trend break, not a buy signal.</p>
+<p>You also cite the 11/9 close holding above the 4/1 close of <strong>175.35</strong>. That is one data point. The intraday low of <strong>170.24</strong> undercut the prior dataset low of <strong>174.351</strong> and printed the lowest price in the entire window. Buyers defended the closing level once. That is not a floor; it is a last line of defense.</p>
+<h6>6. The moat argument is unquantified and not a catalyst</h6>
+<p>You’re right that there is no fundamentals report in this run — and I won’t pretend that proves deterioration. But it also means your CUDA/ecosystem/AI-growth argument is <strong>unquantified</strong> in this debate. It is a narrative, not verified evidence.</p>
+<p>A great company can be a bad investment at the wrong point in the cycle. NVDA is down <strong>−30.05%</strong> from its 10/6 intraday high of <strong>243.37</strong> to the 11/9 low of <strong>170.24</strong>, with ATR up roughly <strong>50%</strong> since mid-October. That is a risk-regime shift. Competitive strength does not protect investors from multiple compression, positioning unwinds, or liquidity events. Leadership is not a bottom signal.</p>
+<h6>My answer to your question: when does “avoid new money” become “buy”?</h6>
+<p>When the trend repairs — not when it is merely stretched.</p>
+<p>I don’t need to buy <strong>10.6% higher</strong> at <strong>197.79</strong> because I’m bearish forever. I need a close above <strong>197.79</strong> to neutralize the short-term downtrend, and above <strong>204.35</strong> to restore the long-term trend, with momentum confirmation. If I miss the first leg, I miss it. That is the cost of avoiding the <strong>20% acceleration tail</strong> toward <strong>161.92</strong> and beyond. You call that buying late. I call it buying after proof.</p>
+<p>And to be clear: I agree that initiating fresh shorts at <strong>178.67</strong> is poor risk/reward. But a bad short entry is not a bull thesis. The correct bear stance is <strong>avoid new money, sell or hedge rallies into 182–186, and reassess only on confirmed trend repair</strong>. That is not a contradiction. That is risk management.</p>
+<p><strong>Bottom line:</strong> NVDA is oversold enough to bounce, but it is not repaired enough to buy. The verified evidence still shows a broken trend, accelerating negative momentum, record volume on declines, a failed light-volume bounce, and no confirmed reversal. The bull’s case rests on an unconfirmed capitulation candle and a qualitative moat. That is not enough.</p>
+<p><strong>NVDA remains a sell-strength / avoid-new-money setup until it proves otherwise.</strong></p>
+<h3 id="s2-3">Research Manager</h3>
+<p><strong>Recommendation</strong>: Underweight</p>
+<p><strong>Rationale</strong>: Both sides agreed on far more than they admitted. The disputed question was never &quot;is NVDA broken?&quot; — it was &quot;is 178.67 an investable entry or an unconfirmed bounce trade?&quot; The bear carried that argument on verified evidence, so I'm siding with the bear, but only to Underweight, not Sell.</p>
+<p>What decided it for the bear: (1) Trend and momentum are uniformly negative and verified — NVDA closed 178.67, below the 10 EMA (196.969), the 50 SMA (219.00) and the 200 SMA (204.348), 12.6% below a rising 200 SMA, with MACD −9.567 and a histogram that re-expanded from −1.03 on 10/29 to −3.631 on 11/9. That is acceleration, not exhaustion, and there is no MACD divergence. (2) Volume profile favors distribution, not absorption: 459.1M shares (≈3.4x the ~134M average) on the 11/9 decline versus only 180.2M on the 11/6 bounce that failed within a day. (3) The 11/9 low of 170.24 undercut the prior dataset low of 174.351 — the market printed its lowest price of the entire window. (4) The bull's own trigger list (add above 182.24, add above 186.64) sits inside the bear's sell zone, so the realistic path is only +2.0% / +4.5% before overhead supply, against −4.7% to 170.24 and an ATR-derived −9.4% to 161.92, with gap risk through a close-based stop in a 4.69%-ATR name. The +10.6% to 197.79 requires the 25% capitulation scenario, not the 55% base case that puts a bounce into 182–186 and then resumes the downtrend.</p>
+<p>The bull did score real points, and they are why this isn't a Sell: the 11/9 close sat in the upper ~87% of the daily range on record volume, 8.43 points off the low; the close of 178.67 held above the 4/1 close of 175.35; the 50&gt;200 stack is still intact (219.00 vs 204.348) with the 200 SMA still rising; there is a nascent RSI divergence (25.4 on 11/5 → 30.8 on 11/6 → 27.4 on 11/9 against a lower closing low); and the technical report itself calls fresh shorts at 178.67 poor risk/reward. The bull was also right that reduced sizing and a closing invalidation are legitimate risk management, not a liquidity donation — his ~2.4% account-level risk math is sound.</p>
+<p>What the bull could not do is convert any of that into verified evidence. The moat/CUDA/AI-growth case is qualitative and unquantified in this run; the absence of a fundamentals report cuts both ways and cannot be used as a catalyst. The RSI divergence rests on roughly two prior oversold touches in three weeks, and the 11/5 oversold print produced only a one-day bounce before a new low. Crowding was asserted with no sentiment or positioning data in the run.</p>
+<p>Net: the bear wins on the weight of verified evidence for the investable horizon; the bull wins only a low-reward, unconfirmed tactical bounce sitting directly under supply with a fat left tail. That is a trim-and-wait posture, not an exit and not an accumulation.</p>
+<p><strong>Strategic Actions</strong>: Baseline is a standard NVDA allocation; adjust relative to it.</p>
+<ol>
+<li>
+<p>REDUCE NOW TO ~50–60% OF STANDARD WEIGHT. If NVDA is at or above a standard allocation, trim roughly 30–40% of the position at market near 178.67. Do not go to zero: the intact 50&gt;200 stack, the rising 200 SMA, and the closing hold above 175.35 argue against a full exit before 170.24 breaks.</p>
+</li>
+<li>
+<p>NO NEW MONEY AT 178.67. Do not buy the unconfirmed 11/9 candle. The bull's starter tranche is a trade, not an investment, and the risk/reward computed above does not clear our bar for adding exposure.</p>
+</li>
+<li>
+<p>SELL/TRIM INTO STRENGTH, DO NOT ADD INTO IT. Use a rally into 182.24 and the 179.92–185.22 gap zone / lower Bollinger at 182.243 to trim another 15–20% of the original position if the bounce stalls or arrives on non-expanding volume. 185.22–186.64 is the second trim zone. Under no circumstance add at these levels — that is the bear's supply wall and the bull's stated add zone; we take the other side.</p>
+</li>
+<li>
+<p>HARD INVALIDATION. A daily close below 170.24 → cut remaining exposure to a token or zero. ATR-derived next reference is 161.92 (~−9.4% from spot), with no observed support below 170.24 in the 2026-04-01 to 2026-11-09 dataset. Treat 170.24 as a closing trigger, not an intraday stop, given ATR of 8.385 (4.69%) and the 9.68-point 11/9 true range — but assume gap risk through it.</p>
+</li>
+<li>
+<p>PROTECT THE RESIDUAL. With ATR at 8.385 (4.69% of price), hedge the remaining 50–60% position with protective puts or a cost-reducing collar (short calls into the 190–200 resistance band). Cap total portfolio-level loss from the residual NVDA position to roughly 1% of portfolio value through the invalidation path.</p>
+</li>
+<li>
+<p>NO FRESH SHORTS AT 178.67. The technical report flags this as poor risk/reward; express any additional bearishness through defined-risk puts or further trimming, not naked shorts at the low.</p>
+</li>
+<li>
+<p>REASSESSMENT LADDER (each step only on a closing basis, and only with volume expanding above ~134M):
+• Daily close above 186.64 on expanding volume → stop trimming, move to Hold (no adds).
+• Daily close above 197.79 (10 EMA / VWMA cluster) → begin rebuilding toward standard weight; short-term downtrend neutralized.
+• Daily close above 204.35 (200 SMA) with MACD histogram contracting → restore Overweight.
+• Daily close below 170.24 on volume → move to Sell/exit residual.</p>
+</li>
+<li>
+<p>DATA GAPS TO FLAG: no fundamentals report, no sentiment/positioning data, and no options-implied volatility in this run. The 55% / 25% / 20% scenario map is quoted from the technical report and was not independently verified here. If a fundamentals report arrives showing AI infrastructure demand intact, re-underwrite the 161.92 tail risk and revisit this rating.</p>
+</li>
+</ol>
+</section><section id="s3"><h2>III. Trading Team Plan</h2><h3 id="s3-1">Trader</h3>
+<p><strong>Action</strong>: Sell</p>
+<p><strong>Reasoning</strong>: The plan is Underweight, and since Overweight/Underweight map to Buy/Sell respectively, this is a Sell — but a graded one, sized as a trim rather than an exit. The verified structure argues for reduction, not standing still: NVDA closed 178.67, beneath the 10 EMA (196.969), the 50 SMA (219.00) and a still-rising 200 SMA (204.348), with MACD at −9.567 and the histogram re-expanding from −1.03 (10/29) to −3.631 (11/9), plus record 459.1M-share distribution volume on the 11/9 decline versus only 180.2M on the failed 11/6 bounce. The whole bounce case is capped at +2.0%/+4.5% (182.24 then 186.64) against −4.7% to 170.24 and an ATR-derived −9.4% to 161.92, so the reward does not clear the bar — but RSI 27.4, a close 1.96% below an extraordinarily wide lower band (182.243), a close in the upper ~87% of the daily range and a still-intact 50&gt;200 stack are why I trim rather than exit. Per the report, no fresh naked shorts at 178.67; additional bearishness is expressed through trimming and defined-risk protection, and the posture reverses only on closes above 186.64 and then 197.79.</p>
+<p><strong>Entry Price</strong>: 178.67</p>
+<p><strong>Stop Loss</strong>: 186.64</p>
+<p><strong>Position Sizing</strong>: Trim ~30-40% of an existing NVDA holding at market near 178.67, targeting ~50-60% of standard weight (not zero); trim a further 15-20% of the original position only into strength at 182.24-186.64 if the bounce stalls or arrives on non-expanding volume (no adds there); cap total portfolio loss from the residual at ~1% of portfolio value, with a closing break below 170.24 cutting the residual to token/zero. No new money at 178.67.</p>
+<p>FINAL TRANSACTION PROPOSAL: <strong>SELL</strong></p>
+</section><section id="s4"><h2>IV. Risk Management Team Decision</h2><h3 id="s4-1">Aggressive Analyst</h3>
+<p>Aggressive Analyst: I’m opening the aggressive-risk case for the trader’s SELL/trim decision on NVDA, and I’ll say the quiet part out loud: the bold move here is not stubbornly holding a broken tape just because RSI is oversold. The bold move is to cut exposure while the distribution evidence is overwhelming, keep a residual position for the violent-bounce optionality, and preserve dry powder for the next asymmetric opportunity. That is not caution for its own sake. That is offensive risk management.</p>
+<p>The conservative analyst, if they come in with “don’t sell at RSI 27, wait for mean reversion,” is leaning on the weakest part of the setup. NVDA closed at 178.67, which is 9.32% below the 10 EMA at 196.969, 18.4% below the 50 SMA at 219.00, and 12.6% below a still-rising 200 SMA at 204.348. Yes, RSI is 27.4, but the report is explicit that oversold has been a continuation signal in this regime: RSI hit 25.4 on 11/5 and produced only a one-day bounce to 186.64 before NVDA made a new low. There is no bullish divergence. Price made lower lows and MACD made proportionally lower lows, with MACD at −9.567 and the histogram re-expanding from −1.03 on 10/29 to −3.631 on 11/9. That is acceleration, not exhaustion. Conservative patience here is not free; it is a full-size bet on an unconfirmed bottom.</p>
+<p>The neutral analyst will likely say “wait for confirmation.” I agree with confirmation, but the trader’s plan already embeds it. The reversal trigger is clear: a close above 186.64, then 197.79. Additional trimming is only into 182.24–186.64 if the bounce stalls or arrives on non-expanding volume. Below 170.24, the residual gets cut to token or zero. So the neutral “wait and see” stance is not actually neutral—it leaves full exposure in a tape where ATR is 8.385, or 4.69% of price, and where 11/9’s single true range was 9.68 points, more than one full ATR. Waiting with full size while NVDA can travel 8–9 points in a routine session is a choice to let volatility dictate the exit instead of choosing it yourself.</p>
+<p>The decisive evidence is volume, and this is where the conservative and neutral cases both miss the opportunity. NVDA traded 459.1M shares on 11/9, the highest volume in the entire 154-session dataset, roughly 3.4 times the ~134M average. The failed 11/6 bounce came on just 180.2M shares. Sellers are expanding volume on declines; buyers are contracting volume on advances. That is distribution, not accumulation. The VWMA at 197.785 sits within 0.41% of the 10 EMA at 196.969, so this is not thin-print noise or a one-gap artifact—the decline is broadly participated. An aggressive risk lens does not ignore that. It says reduce exposure before the market forces a worse exit.</p>
+<p>Now, I am not arguing for a reckless naked short at 178.67. The trader is right to avoid that. NVDA is 1.96% below an extraordinarily wide lower Bollinger band at 182.243, with the band width itself at 25.7% of the middle band. A snapback can be violent. That is exactly why the plan is a graded trim of 30–40%, not an exit to zero, and why the residual stays at roughly 50–60% of standard weight. The upside case is capped near 182.24 and then 186.64, roughly +2.0% to +4.5%, while the downside references are 170.24, about −4.7%, and 161.92, about −9.4% via ATR. The reward does not clear the bar for holding full risk. The aggressive play is to sell into that poor asymmetry while keeping enough NVDA exposure to participate if 11/9 really was a capitulation low.</p>
+<p>The conservative analyst may say the 50 SMA above the 200 SMA is still intact. True, but that stack is compressing to 14.65 points, or 7.2%, and the 50 SMA is rolling over because it is averaging October’s 210–240 range. Waiting for a death cross or waiting for the 200 SMA to break decisively is waiting until the market has already repriced NVDA. The neutral analyst may say the 11/9 candle—close above the open, long lower shadow, record volume—could be absorption. Also true, but unconfirmed. Confirmation requires a close above 182.24, then above 186.64 on expanding volume. Until then, the trader’s trim is the correct high-reward risk posture because it protects capital and preserves optionality.</p>
+<p>So I’m backing the trader’s SELL on NVDA: trim 30–40% at market near 178.67, keep 50–60% of standard weight, trim another 15–20% of the original position only into 182.24–186.64 if the bounce stalls or volume fails to expand, cap residual portfolio loss near 1%, and cut the residual to token or zero on a closing break below 170.24. No new money at 178.67. The bearish posture reverses only above 186.64 and then 197.79. That is not timid. That is aggressive capital allocation: cut the broken, high-volatility exposure now, keep the convexity, and be ready to redeploy when NVDA either confirms a true capitulation low or offers a cleaner asymmetric entry.</p>
+<h3 id="s4-2">Conservative Analyst</h3>
+<p>Conservative Analyst: I’ll start by agreeing with the direction of the trader’s decision on NVDA, but I’m going to push back hard on the aggressive framing and on any neutral “wait and see” posture that leaves full exposure in place. The SELL is correct. What I want is a more conservative execution of it, because the aggressive case is still too generous about how much residual NVDA risk the firm should carry.</p>
+<p>To the aggressive analyst: you are right that the evidence is distribution, not accumulation. NVDA closed at 178.67 on 459.1 million shares, the highest volume in the dataset, roughly 3.4 times the average, while the failed 11/6 bounce came on only 180.2 million. Price is 9.32% below the 10 EMA at 196.969, 18.4% below the 50 SMA at 219.00, and 12.6% below a still-rising 200 SMA at 204.348. MACD is −9.567 and the histogram has re-expanded to −3.631. There is no bullish divergence. RSI 27.4 is not a safety net; the report explicitly shows oversold has been a continuation signal in this tape, with the 11/5 reading of 25.4 producing only a one-day bounce before a new low. So I agree with your evidence.</p>
+<p>Where I disagree is the conclusion that keeping 50–60% of standard weight is the conservative or even the aggressive-right answer. That is not a small residual. That is still a half-size bet on an unconfirmed capitulation low. The report’s base case is roughly 55% that the downtrend resumes after a reflex bounce, 20% acceleration lower, and only 25% that 11/9 was the swing low. If the probability weight is stacked against the bullish bounce case, then carrying half standard weight for “convexity” is not free optionality. It is residual downside beta. The aggressive analyst says the reward does not clear the bar, and I agree. But if the reward does not clear the bar, the conservative response is to cut more decisively, not keep 50–60% of standard weight and hope the bounce arrives before the next leg down.</p>
+<p>The aggressive analyst also says the bold move is to cut exposure while keeping a residual for a violent bounce. I would frame it differently: the prudent move is to reduce exposure enough that a gap through 170.24 does not dictate the firm’s risk budget. NVDA has ATR of 8.385, or 4.69% of price. A two-ATR adverse move is roughly 9.4%, and there is no observed support below 170.24 in the dataset. The ATR-derived reference is 161.92. A 50–60% standard-weight residual may still produce an unacceptable portfolio loss if the stock gaps toward that level. The trader’s 1% portfolio loss cap is reasonable, but I would tighten it and size the residual against a worst-case gap to 161.92, not just the 170.24 closing-break level. If the residual would cost more than roughly 0.5–0.75% of portfolio value in that gap scenario, sell more now.</p>
+<p>To be clear, I am not arguing for a naked short at 178.67. The stock is 1.96% below an extraordinarily wide lower Bollinger band at 182.243, the band width is 25.7% of the middle band, and the 11/9 candle closed above its open with a long lower shadow. A violent snapback is entirely possible. That is exactly why the trader is right to avoid fresh shorts. But the conservative way to respect that snapback risk is to reduce linear long exposure, not to keep a half-size position for optionality. If the firm wants upside participation in a confirmed reversal, it can use a much smaller token position or defined-risk structures after confirmation. It should not pay for that optionality with a large residual NVDA position while the long-term trend is broken, volatility is elevated, and volume is confirming distribution.</p>
+<p>To the neutral analyst, if the neutral position is “wait for confirmation,” I agree with the trigger discipline but not with waiting at full size. The trader’s plan already has confirmation levels: a close above 186.64 and then 197.79. That is the right reversal test. But waiting with full exposure in a tape where a routine session can travel more than one ATR is not neutral. It is a choice to let volatility and gap risk set the exit. The neutral analyst may point to the 11/9 long lower shadow and record volume as possible absorption. That is a legitimate hypothesis, but it is unconfirmed. The report says confirmation requires a close above 182.24 and then above 186.64 on expanding volume. Until that happens, the conservative assumption should be trend continuation, not bottom formation. If NVDA truly bottomed, the firm can re-enter after confirmation at a higher price. Paying up for confirmation is far safer than carrying full exposure through an unconfirmed low with no observed support below 170.24.</p>
+<p>The neutral analyst may also lean on the still-intact 50 SMA above the 200 SMA. I would not overstate that. The spread has compressed to 14.65 points, or 7.2%, the 50 SMA is rolling over because it is averaging October’s 210–240 range, and NVDA is already 12.6% below a rising 200 SMA. The long-term trend is broken even if the death cross has not printed yet. Waiting for the 50/200 stack to invert is waiting until the market has already repriced NVDA. The only remaining bullish structural argument is backward-looking and fragile.</p>
+<p>I also want to flag the information gap. There is no social sentiment report, no news report, and no fundamentals report in this run. That is not a green light. It is an information vacuum. In a name with 4.69% daily ATR and record volume, an unknown catalyst can gap NVDA through a stop. A conservative risk mandate should treat that as a reason to reduce exposure, not as permission to keep a large residual for a bounce.</p>
+<p>So my conservative adjustment to the trader’s decision is this: endorse the SELL on NVDA, but execute it at the high end of the trim immediately. Sell at least 40% of the existing position at market near 178.67, and if the position is oversized relative to the firm’s risk budget, sell 50%. Cap the residual at roughly 30–40% of standard weight, not 50–60%. Further trim 15–20% of the original position only into 182.24–186.64 if the bounce stalls or arrives on non-expanding volume. Do not add new money at 178.67. Do not initiate a naked short. Cut the residual to token or zero on a closing break below 170.24. Size the residual so a gap to 161.92 costs no more than 0.5–0.75% of portfolio value. Reassess any upside participation only after a close above 186.64, and preferably above 197.79; even then, use defined-risk, smaller exposure until the trend repair is confirmed above 197.79 and ideally above 204.35.</p>
+<p>The aggressive analyst is right about the tape but too comfortable with residual risk. The neutral analyst may be right to demand confirmation but too willing to wait with full exposure. The conservative path is not to predict the bottom or to chase the bounce. It is to protect the firm’s capital first, reduce NVDA exposure now while liquidity is available, and require the market to prove a reversal before the firm takes on meaningful risk again.</p>
+<h3 id="s4-3">Neutral Analyst</h3>
+<p>Neutral Analyst: I’m the neutral risk voice here, and I think both of you are directionally right on NVDA but are fighting over the residual as if one fixed number fits every book. The trader’s SELL is reasonable. The tape is broken: NVDA closed at 178.67, 9.32% below the 10 EMA at 196.969, 18.4% below the 50 SMA at 219.00, and 12.6% below a still-rising 200 SMA at 204.348. MACD is −9.567, the histogram has re-expanded to −3.631, and 459.1 million shares on 11/9 versus 180.2 million on the failed 11/6 bounce is genuine distribution evidence. RSI at 27.4 is not a buy signal here because the report shows oversold has been a continuation signal in this regime. So I am not challenging the need to reduce NVDA exposure.</p>
+<p>Where I challenge the aggressive case is on calling a 50–60% standard-weight residual “convexity.” A linear long position is not convexity; it is residual downside beta unless it is paired with defined-risk protection. The report’s own scenario weights are roughly 55% base-case continuation lower, 20% acceleration lower, and only 25% that 11/9 was the capitulation low. That does not justify keeping a half-size position just to hope for a bounce. The aggressive analyst is right that selling the low end and keeping too much risk is not neutral, but he is too comfortable assuming the residual will be manageable if NVDA gaps toward 161.92. If that residual would breach the portfolio loss budget, the aggressive plan is not aggressive risk management; it is aggressive hope.</p>
+<p>Where I challenge the conservative case is that cutting harder just because the reward does not clear the bar can become its own form of overconfidence. NVDA is 1.96% below an extraordinarily wide lower Bollinger band at 182.243, with RSI at 27.4, a close above the open on 11/9, and a long lower shadow. That is not a bottom, but it is exactly the kind of setup where a violent reflex bounce can punish an overcautious full exit at the low. The conservative analyst is right to focus on the information vacuum and gap risk, but a blanket push to cap the residual at 30–40% of standard weight may be too defensive for an account whose total NVDA exposure is already modest. The 0.5–0.75% gap-loss cap is prudent, but it should be a risk-budget check, not an arbitrary reason to sell everything into weakness.</p>
+<p>The balanced answer is to keep the SELL, execute at the middle-to-upper end of the trader’s trim, and size the residual by loss-at-risk rather than by bravado or fear. I would trim 35–40% of the existing NVDA position now near 178.67, not the bare 30% low end. If the current position is oversized, do more immediately until a gap to the ATR-derived 161.92 level would cost no more than roughly 0.75–1.0% of portfolio value; I would use 1% as the ceiling and 0.75% as a preferred guardrail. If that loss check allows a residual around 50% of standard weight, fine. If it only allows 40%, the conservative analyst wins for that account. If the position is already underweight and the risk budget is comfortable, the aggressive analyst’s 50–60% residual is not reckless, but it should not be the default.</p>
+<p>I would also keep the follow-up trims discipline. Trim another 10–15% of the original position only into 182.24–186.64 if the bounce stalls or arrives on non-expanding volume. Do not add new money at 178.67, and do not initiate a naked short. On a closing break below 170.24, cut the residual to token or zero. The bearish posture should reverse only on a close above 186.64, and even then I would want confirmation toward 197.79 before treating it as anything more than a tradable bounce. If the firm wants upside participation after confirmation, use smaller, defined-risk exposure rather than carrying a large linear residual through the unconfirmed zone.</p>
+<p>The aggressive analyst is right that waiting at full size is not neutral, but wrong to frame a 50–60% standard-weight residual as automatically prudent. The conservative analyst is right that gap risk and the missing sentiment, news, and fundamentals reports matter, but wrong to treat maximum reduction as the only safe answer. NVDA has a broken trend and distribution volume, but it is also stretched below a wide lower band with RSI at 27.4 and a still-intact, though fragile, 50&gt;200 SMA stack. That combination says reduce now, keep some participation, and let the risk budget and confirmation levels decide the rest. So I support the SELL on NVDA, but with a moderate execution: trim 35–40% now, keep a residual sized to a 0.75–1.0% worst-case gap loss, add further trims only into failed bounces, and require NVDA to prove itself above 186.64 and then 197.79 before any meaningful re-risking.</p>
+</section><section id="s5"><h2>V. Portfolio Manager Decision</h2><h3 id="s5-1">Portfolio Manager</h3>
+<p><strong>Rating</strong>: Underweight</p>
+<p><strong>Executive Summary</strong>: NVDA is a graded trim, not an exit: reduce now to roughly 40–50% of standard weight by selling 35–40% of an existing position at market near 178.67, and size whatever residual remains so that a gap to the ATR-derived 161.92 costs no more than 0.75–1.0% of portfolio value. No new money at 178.67 and no naked shorts there — the stock sits 1.96% below an extraordinarily wide lower Bollinger band at 182.243, so a violent reflex bounce is a live risk; trim another 10–15% of the original position only into 182.24–186.64 if the bounce stalls or arrives on non-expanding volume. A daily close below 170.24 cuts the residual to token or zero, and the posture reverses only on closes above 186.64, then 197.79, then 204.348. Horizon 1–3 months, with protective puts or a collar against the 190–200 band on the residual.</p>
+<p><strong>Investment Thesis</strong>: All three risk analysts converged on reduction and none defended holding full exposure; the only genuine dispute was how much residual risk to carry, and that dispute is resolved by sizing to loss-at-risk rather than by picking a fixed percentage. The verified evidence for the bear case is not seriously contested by anyone in the debate: NVDA closed 178.67, 9.32% below the 10 EMA at 196.969, 18.4% below the 50 SMA at 219.00, and 12.6% below a still-rising 200 SMA at 204.348; MACD is −9.567 with the histogram re-expanding from −1.03 on 10/29 to −3.631 on 11/9, which is acceleration, not exhaustion, and there is no bullish divergence. Distribution is confirmed by volume asymmetry: 459.1M shares on the 11/9 decline — the highest in the dataset, roughly 3.4x the ~134M average — against only 180.2M on the 11/6 bounce that failed within a day, with the VWMA at 197.785 pinned within 0.41% of the 10 EMA so this is broad participation rather than thin-print noise. The 11/9 low of 170.24 undercut the prior dataset low of 174.351, and there is no observed support beneath it down to the 161.92 ATR reference. The asymmetry is the decisive point the aggressive analyst got exactly right: upside is capped at 182.24 then 186.64 (+2.0% / +4.5%) while downside is −4.7% to 170.24 and −9.4% to 161.92, with ATR of 8.385 (4.69%) and a 9.68-point 11/9 true range making gap risk through any close-based stop real. RSI 27.4 is not a safety net — the report shows oversold has been a continuation signal here, with the 11/5 print of 25.4 producing a one-day bounce before a new low.</p>
+<p>The bull's counterpoints are real but insufficient to justify holding standard weight, and they are why the call is Underweight rather than Sell. The 11/9 close sat in the upper ~87% of the daily range, 8.43 points off the low, above the 4/1 close of 175.35; the 50&gt;200 stack is still intact (219.00 vs 204.348) with the 200 SMA still rising; a nascent RSI divergence exists (25.4 → 30.8 → 27.4 against a lower closing low). But the conservative and neutral analysts correctly dismantled their durability: the 50/200 spread has compressed to 14.65 points (7.2%) with the 50 SMA rolling over because it averages October's 210–240 range, so the only structural bull argument is backward-looking and fragile, and waiting for a death cross means letting the market reprice NVDA first. The divergence rests on roughly two oversold touches in three weeks and the prior one failed immediately. Crowding was asserted with no sentiment or positioning data in the run, and the moat/CUDA/AI-growth case is qualitative and unquantified here.</p>
+<p>On the residual — the one live disagreement — the conservative analyst wins on substance even though I do not adopt his most defensive number as a blanket rule. The neutral analyst's reframing is the correct resolution: a linear long is not convexity, and the report's own weights (roughly 55% base-case continuation after a reflex bounce, 20% acceleration lower, only 25% capitulation low) do not pay for carrying half-size on hope. So the aggressive analyst's 50–60% standard-weight residual is not automatically prudent; the residual is set by the 0.75–1.0% worst-case gap-loss budget to 161.92, with 1% as ceiling and 0.75% as the preferred guardrail. I also adopt the neutral analyst's point that a blanket 30–40% cap is too rigid for an already-underweight book, and the conservative analyst's point that the 1% check must be run against a gap to 161.92, not merely the 170.24 closing break — plus his demand for defined-risk, smaller re-entry only after confirmation.</p>
+<p>What would change this: a daily close above 186.64 on volume expanding above ~134M stops the trimming and moves to Hold; a close above 197.79 begins rebuilding toward standard weight; a close above 204.348 with the MACD histogram contracting restores Overweight. On the downside, a close below 170.24 on volume moves to Sell/exit the residual. Explicit data gaps: no fundamentals report, no sentiment/positioning data, and no options-implied volatility were available in this run; the 55%/25%/20% scenario map is quoted from the technical report and not independently verified, and in a 4.69%-ATR name an unknown catalyst can gap NVDA through a stop. If a fundamentals report arrives showing AI infrastructure demand intact, re-underwrite the 161.92 tail and revisit this rating.</p>
+<p><strong>Price Target</strong>: 170.24</p>
+<p><strong>Time Horizon</strong>: 1-3 months</p>
+</section>
+</main>
+<footer class="credit"><a href="https://github.com/TauricResearch/TradingAgents" rel="noopener">TradingAgents</a> powered by <a class="brand" href="https://github.com/TauricResearch" rel="noopener">Tauric Research</a></footer>
+</div>
+<a class="to-top" href="#top">Top</a>
+</body>
+</html>
