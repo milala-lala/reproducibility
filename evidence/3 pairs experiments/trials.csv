@@ -1,7 +1,0 @@
-trial,cohort,data_sha256,mode,status,debate_rounds_configured,debate_turns,risk_turns,elapsed_seconds,llm_calls,llm_successful_calls,llm_error_callbacks,fallback_count,llm_calls_without_returned_usage,tool_calls,tokens_in,tokens_out,scripted_model_invocations,rating,error_type
-pair-1-rounds-1,frozen_raw_v1,b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca,live,ok,1,2,3,338.497,14,14,0,2,0,0,109042,51729,,Underweight,
-pair-1-rounds-2,frozen_raw_v1,b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca,live,ok,2,4,3,355.28,13,13,0,0,0,0,111468,54923,,Overweight,
-pair-2-rounds-1,frozen_raw_v1,b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca,live,ok,1,2,3,307.114,11,11,0,0,0,0,88800,48701,,Underweight,
-pair-2-rounds-2,frozen_raw_v1,b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca,live,ok,2,4,3,398.136,13,13,0,0,0,0,110812,61631,,Underweight,
-pair-3-rounds-1,frozen_raw_v1,b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca,live,ok,1,2,3,335.183,13,13,0,1,0,0,130877,53374,,Underweight,
-pair-3-rounds-2,frozen_raw_v1,b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca,live,ok,2,4,3,376.393,15,15,0,1,0,0,134587,57874,,Underweight,
