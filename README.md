@@ -1,6 +1,6 @@
 # TradingAgents Debate Reproduction
 
-This CUHK FTEC5660 project compares one and two rounds of Bull and Bear research debate in TradingAgents. Both settings use the market analyst, an analysis date of 9 November 2026, and one round of risk discussion. Each trial starts with empty memory. Both model tiers use DeepSeek `deepseek-flash` through the DeepSeek API.
+This project compares one and two rounds of Bull and Bear research debate in TradingAgents. Both settings use the market analyst, an analysis date of 9 November 2026, and one round of risk discussion. Each trial starts with empty memory. Both model tiers use DeepSeek `deepseek-flash` through the DeepSeek API.
 
 | Setting | Baseline | Treatment |
 | --- | --- | --- |
@@ -93,40 +93,4 @@ Each of the eight exported trial directories contains `trial.json`, `data_manife
 | `attempt_inventory.csv` | Status and evidence path for every exported trial and any explicitly supplied earlier attempts. |
 | `formal_data_checks.csv` | Market-data hashes, recorded price reads, and the cutoff check for the six paired trials. |
 
-## Re-export a saved campaign
 
-[The exporter](code/export_experiment.py) uses standard Python. It rebuilds the four tables and copies the existing reports without making model calls. From the course checkout, paste the block below and enter the path of either a completed campaign or an existing export bundle containing `evidence/live-round1/`, `evidence/live-round2/`, and `evidence/three-pairs/`.
-
-```powershell
-& {
-    $ErrorActionPreference = 'Stop'
-    $campaign = (Resolve-Path -LiteralPath (Read-Host 'Path to a completed campaign or export bundle')).Path
-    $source = $campaign
-    if (Test-Path -LiteralPath (Join-Path $campaign 'evidence\three-pairs') -PathType Container) {
-        $source = Join-Path $campaign 'evidence'
-    }
-    $output = Join-Path (Get-Location).Path ('runs\export-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
-    $extra = @()
-    $earlier = Join-Path $source 'earlier-attempts'
-    if (Test-Path -LiteralPath $earlier -PathType Container) {
-        foreach ($folder in (Get-ChildItem -LiteralPath $earlier -Directory)) {
-            $extra += @('--extra-run', $folder.FullName)
-        }
-    }
-
-    python -B .\code\export_experiment.py `
-        --live-round1 (Join-Path $source 'live-round1') `
-        --live-round2 (Join-Path $source 'live-round2') `
-        --pairs (Join-Path $source 'three-pairs') `
-        --output $output @extra
-    if ($LASTEXITCODE -ne 0) { throw 'The export failed. See the message above.' }
-}
-```
-
-An existing export bundle can include earlier attempts under `evidence/earlier-attempts/`. The block above carries them forward. To add other attempts, supply `--extra-run` followed by the path to each earlier single-run or paired-run directory when invoking the exporter. The exporter lists these attempts separately from the completed campaign's statistics. Re-exporting from a bundle uses its evidence folder names as the batch labels.
-
-## Review the recorded coursework results
-
-The submitted `results/` and `evidence/` files can be opened without setting up the runtime. For the original coursework comparison, use the six formal records in the paired batch and keep the standalone pilots separate. Fresh executions write to `runs/`, so they can be reviewed separately from the published evidence.
-
-The filled `.env`, installed runtime, and new runs stay in ignored folders. Review files for credentials before selecting evidence for a commit.
