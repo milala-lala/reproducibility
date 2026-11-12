@@ -1,0 +1,38 @@
+{
+  "mode": "live",
+  "ticker": "NVDA",
+  "date": "2026-11-09",
+  "debate_rounds_configured": 1,
+  "risk_rounds_configured": 1,
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "base_url": "https://api.deepseek.com",
+  "temperature": "provider default",
+  "top_p": "provider default",
+  "max_tokens": "provider default",
+  "initial_memory": "empty",
+  "analysts": [
+    "market"
+  ],
+  "cohort": "frozen_raw_v1",
+  "data_sha256": "b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca",
+  "status": "failed",
+  "error_type": "APIStatusError",
+  "elapsed_seconds": 239.302,
+  "cause_type": "HTTPStatusError",
+  "http_status": 402,
+  "exception_chain": [
+    "APIStatusError",
+    "HTTPStatusError"
+  ],
+  "fallback_count": 1,
+  "llm_calls": 11,
+  "tool_calls": 0,
+  "tokens_in": 91304,
+  "tokens_out": 36168,
+  "llm_successful_calls": 10,
+  "llm_error_callbacks": 1,
+  "llm_calls_with_usage": 10,
+  "llm_calls_without_returned_usage": 1,
+  "usage_complete": false
+}
