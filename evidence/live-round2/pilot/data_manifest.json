@@ -1,0 +1,16 @@
+{
+  "mode": "frozen_raw_ohlcv",
+  "source_path": "D:\\CUHK\\5660\\reproducibility\\TradingAgents\\tradingagents\\reproducibility\\evidence\\original-pilot\\cache\\NVDA-YFin-data.csv",
+  "source_sha256": "08895ba226978118e59a475e75bcaa303f9812460eee1b664945edefce0cbf49",
+  "consumed_frame_sha256": "b8b31ef2605df55eea98dd87aff975dc7a3202df8580fba69976460b1b8fe8ca",
+  "rows": 1254,
+  "start": "2021-11-10",
+  "end": "2026-11-09",
+  "cutoff": "2026-11-09",
+  "provenance": "Original pilot cache; yfinance pathway, not independently re-downloaded",
+  "identity": {
+    "company_name": "NVIDIA Corporation"
+  },
+  "identity_provenance": "Fixed symbol identity for formal comparison; original prompt identity not saved",
+  "note": "Fresh analyst and model calls; market_report is never loaded from the pilot."
+}
