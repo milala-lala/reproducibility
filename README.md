@@ -123,35 +123,42 @@ Write-Host "Batch directory $batch"
 
 ## Inspect or recalculate the recorded results
 
-The recorded results are available without installing TradingAgents or using an API key.
-
-| Artifact | What it contains |
-| --- | --- |
-| [Trial results](results/trials.csv) and [summary](results/summary.csv) | Per-attempt metrics and grouped statistics. The formal arms are `formal_frozen_one_round` and `formal_frozen_two_round`. |
-| [Attempt inventory](results/attempt_inventory.csv) | Recorded successes, failures, and interruptions. |
-| [Data checks](results/formal_data_checks.csv) | Frozen input and date cutoff checks for the completed trials. |
-| [Completed campaign](evidence/3%20pairs%20experiments/) | Six trial records, effective settings, data-read traces, and reports. |
-| [Earlier interrupted campaign](evidence/false%20experiment/) | The failed one-round trial before the completed campaign. |
-| [Original pilot](evidence/original-pilot/) and [frozen two-round pilot](evidence/modification/) | Feasibility runs kept separate from the formal comparison. |
-
-To recompute the formal summary without making API calls, open PowerShell at the root of the course checkout and run the commands below. They use standard Python and write to a separate temporary copy of the six trial records.
+To recalculate the published results, paste the whole block into Windows PowerShell from either the `reproducibility` or `TradingAgents-runtime` folder. It reads the six saved trial records and writes `trials.csv` and `summary.json` to a new temporary folder. No API key is required.
 
 ```powershell
-$course = (Get-Location).Path
-$saved = Join-Path $course 'evidence\3 pairs experiments'
-$review = Join-Path ([System.IO.Path]::GetTempPath()) ('tradingagents-review-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
-New-Item -ItemType Directory -Path $review -ErrorAction Stop | Out-Null
-Get-ChildItem -Path "$saved\*\trial.json" -File | ForEach-Object {
-    $trialCopy = Join-Path $review $_.Directory.Name
-    New-Item -ItemType Directory -Path $trialCopy -ErrorAction Stop | Out-Null
-    Copy-Item -LiteralPath $_.FullName -Destination $trialCopy -ErrorAction Stop
-}
-python -B (Join-Path $course 'code\summarize_experiment.py') $review
-if ($LASTEXITCODE -ne 0) { throw 'Could not summarize the saved trials.' }
-Write-Host "Recalculated results in $review"
-```
+& {
+    $ErrorActionPreference = 'Stop'
+    $course = (Get-Location).Path
+    if (-not (Test-Path -LiteralPath (Join-Path $course 'code\summarize_experiment.py') -PathType Leaf)) {
+        $course = Join-Path $course '..\reproducibility'
+    }
 
-All six completed trials followed the expected turn counts. The two-round group took about 49.7 seconds longer on average, and the rating changed in one of the three pairs. Fresh calls can produce different arguments and ratings.
+    $script = Join-Path $course 'code\summarize_experiment.py'
+    $saved = Join-Path $course 'evidence\3 pairs experiments'
+    if (-not (Test-Path -LiteralPath $script -PathType Leaf) -or
+        -not (Test-Path -LiteralPath $saved -PathType Container)) {
+        throw 'Open PowerShell in the reproducibility or TradingAgents-runtime folder.'
+    }
+
+    $trials = @(Get-ChildItem -Path "$saved\*\trial.json" -File)
+    if ($trials.Count -ne 6) {
+        throw "Expected six saved trial records, but found $($trials.Count)."
+    }
+
+    $review = Join-Path ([System.IO.Path]::GetTempPath()) ('tradingagents-review-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
+    New-Item -ItemType Directory -Path $review | Out-Null
+    foreach ($trial in $trials) {
+        $trialCopy = Join-Path $review $trial.Directory.Name
+        New-Item -ItemType Directory -Path $trialCopy | Out-Null
+        Copy-Item -LiteralPath $trial.FullName -Destination $trialCopy
+    }
+
+    python -B $script $review
+    if ($LASTEXITCODE -ne 0) { throw 'Could not summarize the saved trials.' }
+
+    Write-Host "Results folder: $review"
+}
+```
 
 ## Keep local files out of the submission
 
