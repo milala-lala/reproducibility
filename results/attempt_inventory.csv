@@ -1,0 +1,14 @@
+batch,trial,group,status,debate_rounds_configured,error_type,http_status,record
+debate-rounds1-20261112-131824-132,pilot,live_round1,ok,1,,,evidence/live-round1/pilot/trial.json
+debate-rounds2-20261112-132637-039,pilot,live_round2,ok,2,,,evidence/live-round2/pilot/trial.json
+formal-pairs3-20261112-142618-024,pair-1-rounds-1,formal_frozen_one_round,ok,1,,,evidence/three-pairs/pair-1-rounds-1/trial.json
+formal-pairs3-20261112-142618-024,pair-1-rounds-2,formal_frozen_two_round,ok,2,,,evidence/three-pairs/pair-1-rounds-2/trial.json
+formal-pairs3-20261112-142618-024,pair-2-rounds-1,formal_frozen_one_round,ok,1,,,evidence/three-pairs/pair-2-rounds-1/trial.json
+formal-pairs3-20261112-142618-024,pair-2-rounds-2,formal_frozen_two_round,ok,2,,,evidence/three-pairs/pair-2-rounds-2/trial.json
+formal-pairs3-20261112-142618-024,pair-3-rounds-1,formal_frozen_one_round,ok,1,,,evidence/three-pairs/pair-3-rounds-1/trial.json
+formal-pairs3-20261112-142618-024,pair-3-rounds-2,formal_frozen_two_round,ok,2,,,evidence/three-pairs/pair-3-rounds-2/trial.json
+debate-rounds1-20261112-131657-604,pilot,earlier_attempt,failed,1,OpenAIConnectionError,,evidence/earlier-attempts/debate-rounds1-20261112-131657-604/pilot/trial.json
+formal-pairs3-20261112-133419-596,pair-1-rounds-1,earlier_attempt,ok,1,,,evidence/earlier-attempts/formal-pairs3-20261112-133419-596/pair-1-rounds-1/trial.json
+formal-pairs3-20261112-133419-596,pair-1-rounds-2,earlier_attempt,ok,2,,,evidence/earlier-attempts/formal-pairs3-20261112-133419-596/pair-1-rounds-2/trial.json
+formal-pairs3-20261112-133419-596,pair-2-rounds-1,earlier_attempt,failed,1,APIStatusError,402,evidence/earlier-attempts/formal-pairs3-20261112-133419-596/pair-2-rounds-1/trial.json
+formal-pairs3-20261112-133419-596,pair-2-rounds-2,earlier_attempt,ok,2,,,evidence/earlier-attempts/formal-pairs3-20261112-133419-596/pair-2-rounds-2/trial.json
