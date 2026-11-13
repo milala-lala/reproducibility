@@ -7,7 +7,7 @@ This project compares one and two rounds of Bull and Bear research debate in Tra
 | Research debate | 1 round, 2 turns | 2 rounds, 4 turns |
 | Risk discussion | 1 round, 3 turns | 1 round, 3 turns |
 
-The study checks the debate structure and downstream handoff described in Section 3.2 and Figure 3 of [TradingAgents, arXiv:2412.20138v7](https://arxiv.org/abs/2412.20138v7). It records time, model calls, tokens, and ratings for a single NVDA task. These measurements do not reproduce the paper's investment returns.
+The study checks the debate structure and downstream handoff[TradingAgents, arXiv:2412.20138v7](https://arxiv.org/abs/2412.20138v7). It records time, model calls, tokens, and ratings for a single NVDA task. These measurements do not reproduce the paper's investment returns.
 
 ## Install on Windows
 
